@@ -1,10 +1,239 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    text-align: center;
-    padding-top: 50px;
+/*#252525*/
+/*#e4311d*/
+/*#372d2c*/
+/*#050507*/
+/*#ffffff*/
+
+/* Сброс всех отступов, полей и рамок */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: 500ms;
 }
 
-h1 {
-    color: #333;
+/* Устанавливаем базовые стили для всех элементов */
+html, body {
+    height: 100%;
+    font-family: "Microsoft JhengHei UI Light";
+    background-color: #ffffff;
+}
+
+li {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.header {
+    background-color: #050507;
+    border-radius: 30px;
+    margin: 20px 50px;
+    padding: 10px 10px;
+    color: #ffffff;
+
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.header div,
+.header nav {
+    flex: 1;
+}
+
+.header .logo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.header .logo img {
+    display: flex;
+    width: 42px;
+}
+
+.header .logo p {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+}
+
+.header .logo:hover > img,
+.header .logo:hover > p {
+    transform: scale(1.04);
+
+}
+
+.header nav {
+    font-size: 18px;
+    font-weight: lighter;
+    display: flex;
+    justify-content: center;
+}
+
+.header nav .nav-list {
+    display: flex;
+    gap: 20px;
+    background-color: #252525;
+    padding: 10px 25px;
+    border-radius: 20px;
+    align-items: stretch;
+    justify-content: center;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.header nav .nav-title {
+    display: none;
+    background-color: #252525;
+    padding: 5px 25px;
+    border-radius: 20px;
+}
+
+.header nav .nav-title:hover {
+    transform: scale(1.08);
+}
+
+.header nav .nav-list li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header nav .nav-list li:hover {
+    transform: scale(1.08);
+}
+
+.header .button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header .button button {
+    height: 100%;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 20px;
+
+    background-color: #ffffff;
+    color: #050507;
+
+    cursor: pointer;
+
+    font-size: 20px;
+}
+
+.header .button button:hover {
+    transform: scale(1.04);
+}
+
+.header .button img {
+    width: 32px;
+    height: 32px;
+    display: none;
+}
+
+.header .button img:hover {
+    transform: scale(1.04);
+}
+
+.header a {
+    color: #ffffff;
+}
+
+.header .button button a {
+    color: #050507;
+}
+
+.hide-nav {
+    height: 0 !important;
+    overflow: hidden !important;
+    padding: 5px 25px !important;
+}
+
+.show-nav {
+    height: auto !important;
+    overflow: hidden !important;
+    padding: 10px 25px !important;
+}
+
+@media (max-width: 1000px) {
+    .header .logo p {
+        display: none;
+    }
+
+    .header .logo img {
+        width: 32px;
+    }
+
+    .header nav {
+        font-size: 16px;
+    }
+
+    .header .button button {
+        display: none;
+    }
+
+    .header .button img {
+        display: flex;
+    }
+
+    .header nav .nav-list {
+        padding: 5px 25px;
+    }
+}
+
+@media (max-width: 900px) {
+    .header .logo p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 665px) {
+    .header nav .nav-list {
+        border-radius: 0;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        position: absolute;
+        top: 70px;
+        gap: 30px;
+        padding: 10px 25px 15px;
+    }
+}
+
+@media (max-width: 500px) {
+    .header {
+        margin: 10px;
+    }
+
+    .header nav .nav-list {
+        top: 60px;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 440px) {
+    .header nav .nav-list {
+        width: 85%;
+        flex-direction: column;
+        height: 0;
+        overflow: hidden;
+        padding: 0;
+    }
+
+        .header nav .nav-title {
+            display: flex;
+        }
+}
+
+@media (max-width: 386px) {
+    .header nav .nav-list {
+        width: 80%;
+    }
 }
