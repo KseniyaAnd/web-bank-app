@@ -30,6 +30,7 @@ const inputLoginPin = document.querySelector('.login__input--pin');
 const inputSignupFullname = document.querySelector('.signup__input--fullname');
 const inputSignupPin = document.querySelector('.signup__input--pin');
 const signupBtn = document.querySelector(".signup-btn");
+const loginBtn = document.querySelector(".login-btn");
 
 
 const clearInput = (input) => {
@@ -59,17 +60,17 @@ const toggleHeader = () => {
     }
 }
 
-const validatePin = (pin) => {
+const validatePin = (pin, input) => {
     const pinString = String(pin);
 
     if (pinString.length >= 4 && /^\d+$/.test(pinString)) {
         return true;
     } else {
-        inputSignupPin.classList.add('input-error');
-        createErValText('PIN must consist of at least four digits and only digits.', inputSignupPin);
+        input.classList.add('input-error');
+        createErValText('PIN must consist of at least four digits and only digits.', input);
 
         setTimeout(() => {
-            inputSignupPin.classList.remove('input-error');
+            input.classList.remove('input-error');
         }, 1000);
 
         return false;
@@ -105,6 +106,24 @@ function validateFullname(fullname) {
 
     return true;
 }
+
+const validateUsername = (username) => {
+    const usernameRegex = /^[A-Za-zА-Яа-яЁё]+$/;
+
+    if (!usernameRegex.test(username)) {
+        inputLoginUsername.classList.add('input-error');
+        createErValText('Username must consist of the first letters of full name.', inputLoginUsername);
+
+        setTimeout(() => {
+            inputLoginUsername.classList.remove('input-error');
+            removeErValText(inputLoginUsername);
+        }, 1000);
+
+        return false;
+    }
+    return true;
+};
+
 
 const validateNotEmpty = (inputElement) => {
     if (inputElement.value.trim() === '') {
@@ -142,6 +161,27 @@ const addUser = (fullname, pin) => {
         console.log(`Account for ${fullname} already exists.`);
     }
 };
+
+const findUserByUsername = (username) => {
+    let foundUser = null;
+
+    Users.forEach((value, key) => {
+        if (value.username === username.toUpperCase()) {
+            foundUser = { fullname: key, ...value };
+        }
+    });
+
+    return foundUser;
+};
+
+const findPinForUser = (user, pin) => {
+    if (user && user.pin === Number(pin)) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
 
 const createUsername = (fullname) => {
     return fullname
@@ -188,8 +228,44 @@ signupBtn.addEventListener('click', (e) => {
         const pin = inputSignupPin.value;
         if (validateNotEmpty(inputSignupFullname)) {
             if (validateFullname(fullname) && validateNotEmpty(inputSignupPin)) {
-                if (validatePin(pin)) {
+                if (validatePin(pin, inputSignupPin)) {
                     addUser(fullname, pin);
+                }
+            }
+        }
+    }
+);
+
+loginBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        removeErValText(inputLoginPin);
+        removeErValText(inputLoginUsername);
+        const username = inputLoginUsername.value;
+        const pin = inputLoginPin.value;
+        const user = findUserByUsername(username);
+        if (validateNotEmpty(inputLoginUsername)) {
+            if (validateUsername(username) && validateNotEmpty(inputLoginPin)) {
+                if (validatePin(pin, inputLoginPin)) {
+                    if (user && findPinForUser(user, pin)) {
+                        currentAccount = user;
+
+                        clearInput(inputLoginUsername);
+                        clearInput(inputLoginPin);
+                        loginForm.classList.add('opacity-zero');
+                        loginForm.classList.remove('opacity-one');
+                        loginForm.classList.remove('z-index-1');
+                        toggleHeader();
+                    } else {
+                        inputLoginUsername.classList.add('input-error');
+                        inputLoginPin.classList.add('input-error');
+                        createErValText('Wrong username or PIN.', inputLoginPin);
+
+                        setTimeout(() => {
+                            inputLoginUsername.classList.remove('input-error');
+                            inputLoginPin.classList.remove('input-error');
+                            removeErValText(inputLoginPin);
+                        }, 1000);
+                    }
                 }
             }
         }
