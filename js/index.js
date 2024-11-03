@@ -61,7 +61,63 @@ const toggleHeader = () => {
 
 const validatePin = (pin) => {
     const pinString = String(pin);
-    return pinString.length >= 4 && /^\d+$/.test(pinString);
+
+    if (pinString.length >= 4 && /^\d+$/.test(pinString)) {
+        return true;
+    } else {
+        inputSignupPin.classList.add('input-error');
+        createErValText('PIN must consist of at least four digits and only digits.', inputSignupPin);
+
+        setTimeout(() => {
+            inputSignupPin.classList.remove('input-error');
+        }, 1000);
+
+        return false;
+    }
+};
+
+
+function validateFullname(fullname) {
+    const words = fullname.trim().split(/\s+/);
+    if (words.length < 2) {
+        inputSignupFullname.classList.add('input-error');
+        createErValText('Fullname must contain more than two words.', inputSignupFullname)
+
+        setTimeout(() => {
+            inputSignupFullname.classList.remove('input-error');
+        }, 1000);
+
+        return false;
+    }
+
+    for (const word of words) {
+        if (!/^[A-ZА-Я][a-zа-я]*$/.test(word)) {
+            inputSignupFullname.classList.add('input-error');
+            createErValText('Fullname must consist of only a letter and each word begins with a capital letter.', inputSignupFullname)
+
+            setTimeout(() => {
+                inputSignupFullname.classList.remove('input-error');
+            }, 1000);
+
+            return false;
+        }
+    }
+
+    return true;
+}
+
+const validateNotEmpty = (inputElement) => {
+    if (inputElement.value.trim() === '') {
+        inputElement.classList.add('input-error');
+        createErValText('Field id empty.', inputElement);
+        setTimeout(() => {
+            inputElement.classList.remove('input-error');
+        }, 1000);
+
+        return false;
+    } else {
+        return true;
+    }
 };
 
 const addUser = (fullname, pin) => {
@@ -95,6 +151,23 @@ const createUsername = (fullname) => {
         .join('');
 };
 
+const createErValText = (text, referenceElement) => {
+    const erText = document.createElement('p');
+    erText.style.fontSize = '16px';
+    erText.style.color = '#f8d7da;';
+    erText.textContent = text;
+    referenceElement.after(erText);
+}
+
+const removeErValText = (referenceElement) => {
+    const nextElement = referenceElement.nextElementSibling;
+
+    if (nextElement && nextElement.tagName === 'P') {
+        nextElement.remove();
+    }
+};
+
+
 let currentAccount;
 toggleHeader();
 toggleForms(loginForm, signupForm, inputLoginUsername, inputLoginPin);
@@ -108,15 +181,17 @@ signupLink.addEventListener('click', () => {
 });
 
 signupBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const fullname = inputSignupFullname.value;
-    const pin = Number(inputSignupPin.value);
-    if (validatePin(pin)) {
-        addUser(fullname, pin);
-    } else {
-        inputSignupPin.classList.add('input-error');
-        setTimeout(() => {
-            inputSignupPin.classList.remove('input-error');
-        }, 1000);
+        e.preventDefault();
+        removeErValText(inputSignupPin);
+        removeErValText(inputSignupFullname);
+        const fullname = inputSignupFullname.value;
+        const pin = inputSignupPin.value;
+        if (validateNotEmpty(inputSignupFullname)) {
+            if (validateFullname(fullname) && validateNotEmpty(inputSignupPin)) {
+                if (validatePin(pin)) {
+                    addUser(fullname, pin);
+                }
+            }
+        }
     }
-});
+);
