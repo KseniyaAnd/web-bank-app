@@ -39,16 +39,14 @@ const clearInput = (input) => {
 
 const toggleForms = (activeForm, inactiveForm, usernameInput, pinInput) => {
     inactiveForm.classList.add('opacity-zero');
-    inactiveForm.classList.remove('opacity-one');
-    inactiveForm.classList.remove('z-index-1');
+    inactiveForm.classList.remove('opacity-one', 'z-index-1');
 
     activeForm.classList.remove('opacity-zero');
-    activeForm.classList.add('opacity-one');
-    activeForm.classList.add('z-index-1');
+    activeForm.classList.add('opacity-one', 'z-index-1');
 
     clearInput(usernameInput);
     clearInput(pinInput);
-}
+};
 
 const toggleHeader = () => {
     if (currentAccount) {
@@ -62,63 +60,33 @@ const toggleHeader = () => {
 
 const validatePin = (pin, input) => {
     const pinString = String(pin);
-
     if (pinString.length >= 4 && /^\d+$/.test(pinString)) {
         return true;
     } else {
-        input.classList.add('input-error');
-        createErValText('PIN must consist of at least four digits and only digits.', input);
-
-        setTimeout(() => {
-            input.classList.remove('input-error');
-        }, 1000);
-
+        showError(input, 'PIN must consist of at least four digits and only digits.');
         return false;
     }
 };
 
-
-function validateFullname(fullname) {
+const validateFullname = (fullname) => {
     const words = fullname.trim().split(/\s+/);
     if (words.length < 2) {
-        inputSignupFullname.classList.add('input-error');
-        createErValText('Fullname must contain more than two words.', inputSignupFullname)
-
-        setTimeout(() => {
-            inputSignupFullname.classList.remove('input-error');
-        }, 1000);
-
+        showError(inputSignupFullname, 'Fullname must contain more than two words.');
         return false;
     }
-
     for (const word of words) {
         if (!/^[A-ZА-Я][a-zа-я]*$/.test(word)) {
-            inputSignupFullname.classList.add('input-error');
-            createErValText('Fullname must consist of only a letter and each word begins with a capital letter.', inputSignupFullname)
-
-            setTimeout(() => {
-                inputSignupFullname.classList.remove('input-error');
-            }, 1000);
-
+            showError(inputSignupFullname, 'Fullname must consist of only a letter and each word begins with a capital letter.');
             return false;
         }
     }
-
     return true;
-}
+};
 
 const validateUsername = (username) => {
     const usernameRegex = /^[A-Za-zА-Яа-яЁё]+$/;
-
     if (!usernameRegex.test(username)) {
-        inputLoginUsername.classList.add('input-error');
-        createErValText('Username must consist of the first letters of full name.', inputLoginUsername);
-
-        setTimeout(() => {
-            inputLoginUsername.classList.remove('input-error');
-            removeErValText(inputLoginUsername);
-        }, 1000);
-
+        showError(inputLoginUsername, 'Username must consist of the first letters of full name.');
         return false;
     }
     return true;
@@ -127,11 +95,7 @@ const validateUsername = (username) => {
 
 const validateNotEmpty = (inputElement) => {
     if (inputElement.value.trim() === '') {
-        inputElement.classList.add('input-error');
-        createErValText('Field id empty.', inputElement);
-        setTimeout(() => {
-            inputElement.classList.remove('input-error');
-        }, 1000);
+        showError(inputElement, 'Field id empty.');
 
         return false;
     } else {
@@ -152,9 +116,7 @@ const addUser = (fullname, pin) => {
         clearInput(inputSignupFullname);
         clearInput(inputSignupPin);
         currentAccount = newUser;
-        signupForm.classList.add('opacity-zero');
-        signupForm.classList.remove('opacity-one');
-        signupForm.classList.remove('z-index-1');
+        toggleForms(loginForm, signupForm, inputLoginUsername, inputLoginPin);
         toggleHeader();
 
     } else {
@@ -167,7 +129,7 @@ const findUserByUsername = (username) => {
 
     Users.forEach((value, key) => {
         if (value.username === username.toUpperCase()) {
-            foundUser = { fullname: key, ...value };
+            foundUser = {fullname: key, ...value};
         }
     });
 
@@ -205,6 +167,15 @@ const removeErValText = (referenceElement) => {
     if (nextElement && nextElement.tagName === 'P') {
         nextElement.remove();
     }
+};
+
+const showError = (input, message) => {
+    input.classList.add('input-error');
+    createErValText(message, input);
+    setTimeout(() => {
+        input.classList.remove('input-error');
+        removeErValText(input);
+    }, 1000);
 };
 
 
@@ -251,20 +222,10 @@ loginBtn.addEventListener('click', (e) => {
 
                         clearInput(inputLoginUsername);
                         clearInput(inputLoginPin);
-                        loginForm.classList.add('opacity-zero');
-                        loginForm.classList.remove('opacity-one');
-                        loginForm.classList.remove('z-index-1');
+                        toggleForms(signupForm, loginForm, inputSignupFullname, inputSignupPin);
                         toggleHeader();
                     } else {
-                        inputLoginUsername.classList.add('input-error');
-                        inputLoginPin.classList.add('input-error');
-                        createErValText('Wrong username or PIN.', inputLoginPin);
-
-                        setTimeout(() => {
-                            inputLoginUsername.classList.remove('input-error');
-                            inputLoginPin.classList.remove('input-error');
-                            removeErValText(inputLoginPin);
-                        }, 1000);
+                        showError(inputLoginUsername, 'Wrong username or PIN.');
                     }
                 }
             }
