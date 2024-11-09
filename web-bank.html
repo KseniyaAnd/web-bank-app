@@ -7,59 +7,57 @@
     <link rel="stylesheet" href="css/auth.css">
 </head>
 <body>
-    <header class="header opacity-zero">
-        <div class="logo">
-            <a href="page-bank.html">
-                <img alt="bank-logo" src="assets/img/bank-logo.png"/>
-                <p>Web Bank</p>
-            </a>
-        </div>
+<header class="header opacity-zero">
+    <div class="logo">
+        <a href="page-bank.html">
+            <img alt="bank-logo" src="assets/img/bank-logo.png"/>
+            <p>Web Bank</p>
+        </a>
+    </div>
 
-        <div class="button">
-            <a href="page-bank.html">
-                <button>
-                    Log Out
-                </button>
-                <img src="assets/img/log-out-arrow.png">
-            </a>
-        </div>
-    </header>
+    <div class="button logout-btn">
+        <button>
+            Log Out
+        </button>
+        <img src="assets/img/log-out-arrow.png">
+    </div>
+</header>
 
-    <main class="main">
-        <form class="auth-form login opacity-zero">
-            <p>Log in</p>
-            <input
-                    type="text"
-                    placeholder="user"
-                    class="login__input--user"
-            />
-            <input
-                    type="password"
-                    placeholder="PIN"
-                    maxlength="4"
-                    class="login__input--pin"
-            />
-            <button class="login-btn">Continue</button>
-            <p class="auth-link signup-link">Sign up.</p>
-        </form>
+<main class="main">
+    <form class="auth-form login opacity-zero">
+        <p>Log in</p>
+        <input
+                type="text"
+                placeholder="user"
+                class="login__input--user"
+        />
+        <input
+                type="password"
+                placeholder="PIN"
+                maxlength="4"
+                class="login__input--pin"
+        />
+        <button class="login-btn">Continue</button>
+        <p class="auth-link signup-link">Sign up.</p>
+    </form>
 
-        <form class="auth-form signup opacity-zero">
-            <p>Sign up</p>
-            <input
-                    type="text"
-                    placeholder="Full Name"
-                    class="signup__input--fullname"
-            />
-            <input
-                    type="password"
-                    placeholder="PIN"
-                    maxlength="4"
-                    class="signup__input--pin"
-            />
-            <button class="signup-btn">Continue</button>
-            <p class="auth-link login-link">Log in.</p>
-        </form>
-    </main>
-    <script src="js/index.js"></script>
+    <form class="auth-form signup opacity-zero">
+        <p>Sign up</p>
+        <input
+                type="text"
+                placeholder="Full Name"
+                class="signup__input--fullname"
+        />
+        <input
+                type="password"
+                placeholder="PIN"
+                maxlength="4"
+                class="signup__input--pin"
+        />
+        <button class="signup-btn">Continue</button>
+        <p class="auth-link login-link">Log in.</p>
+    </form>
+</main>
+<script src="js/index.js"></script>
 </body>
 </html>

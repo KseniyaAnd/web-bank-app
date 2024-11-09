@@ -29,6 +29,7 @@ const inputSignupFullname = document.querySelector('.signup__input--fullname');
 const inputSignupPin = document.querySelector('.signup__input--pin');
 const signupBtn = document.querySelector(".signup-btn");
 const loginBtn = document.querySelector(".login-btn");
+const logoutBtn = document.querySelector(".logout-btn");
 
 let currentAccount;
 
@@ -220,4 +221,11 @@ loginBtn.addEventListener('click', (e) => {
             }
         }
     }
+});
+
+logoutBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    currentAccount = undefined;
+    toggleHeader();
+    showForm(loginForm);
 });
