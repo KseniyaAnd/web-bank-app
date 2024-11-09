@@ -1,5 +1,4 @@
-'use strict'
-
+'use strict';
 
 let Users = new Map([
     ['Jonas Schmedtmann', {
@@ -19,7 +18,6 @@ let Users = new Map([
     }]
 ]);
 
-
 const header = document.querySelector('.header');
 const loginForm = document.querySelector('.login');
 const signupForm = document.querySelector('.signup');
@@ -32,20 +30,28 @@ const inputSignupPin = document.querySelector('.signup__input--pin');
 const signupBtn = document.querySelector(".signup-btn");
 const loginBtn = document.querySelector(".login-btn");
 
+let currentAccount;
 
 const clearInput = (input) => {
     input.value = '';
-}
+};
 
-const toggleForms = (activeForm, inactiveForm, usernameInput, pinInput) => {
-    inactiveForm.classList.add('opacity-zero');
-    inactiveForm.classList.remove('opacity-one', 'z-index-1');
-
-    activeForm.classList.remove('opacity-zero');
-    activeForm.classList.add('opacity-one', 'z-index-1');
+const toggleFormsVisibility = (activeForm, inactiveForm, usernameInput, pinInput) => {
+    hideForm(inactiveForm);
+    showForm(activeForm);
 
     clearInput(usernameInput);
     clearInput(pinInput);
+};
+
+const showForm = (form) => {
+    form.classList.remove('opacity-zero');
+    form.classList.add('opacity-one', 'z-index-1');
+};
+
+const hideForm = (form) => {
+    form.classList.add('opacity-zero');
+    form.classList.remove('opacity-one', 'z-index-1');
 };
 
 const toggleHeader = () => {
@@ -56,7 +62,7 @@ const toggleHeader = () => {
         header.classList.add('opacity-zero');
         header.classList.remove('opacity-one');
     }
-}
+};
 
 const validatePin = (pin, input) => {
     const pinString = String(pin);
@@ -92,11 +98,9 @@ const validateUsername = (username) => {
     return true;
 };
 
-
 const validateNotEmpty = (inputElement) => {
     if (inputElement.value.trim() === '') {
-        showError(inputElement, 'Field id empty.');
-
+        showError(inputElement, 'Field is empty.');
         return false;
     } else {
         return true;
@@ -116,9 +120,8 @@ const addUser = (fullname, pin) => {
         clearInput(inputSignupFullname);
         clearInput(inputSignupPin);
         currentAccount = newUser;
-        toggleForms(loginForm, signupForm, inputLoginUsername, inputLoginPin);
+        hideForm(signupForm);
         toggleHeader();
-
     } else {
         console.log(`Account for ${fullname} already exists.`);
     }
@@ -126,24 +129,17 @@ const addUser = (fullname, pin) => {
 
 const findUserByUsername = (username) => {
     let foundUser = null;
-
     Users.forEach((value, key) => {
         if (value.username === username.toUpperCase()) {
             foundUser = {fullname: key, ...value};
         }
     });
-
     return foundUser;
 };
 
 const findPinForUser = (user, pin) => {
-    if (user && user.pin === Number(pin)) {
-        return true;
-    } else {
-        return false;
-    }
+    return user && user.pin === Number(pin);
 };
-
 
 const createUsername = (fullname) => {
     return fullname
@@ -156,14 +152,13 @@ const createUsername = (fullname) => {
 const createErValText = (text, referenceElement) => {
     const erText = document.createElement('p');
     erText.style.fontSize = '16px';
-    erText.style.color = '#f8d7da;';
+    erText.style.color = '#f8d7da';
     erText.textContent = text;
     referenceElement.after(erText);
-}
+};
 
 const removeErValText = (referenceElement) => {
     const nextElement = referenceElement.nextElementSibling;
-
     if (nextElement && nextElement.tagName === 'P') {
         nextElement.remove();
     }
@@ -174,61 +169,55 @@ const showError = (input, message) => {
     createErValText(message, input);
     setTimeout(() => {
         input.classList.remove('input-error');
-        removeErValText(input);
     }, 1000);
 };
 
-
-let currentAccount;
 toggleHeader();
-toggleForms(loginForm, signupForm, inputLoginUsername, inputLoginPin);
+toggleFormsVisibility(loginForm, signupForm, inputLoginUsername, inputLoginPin);
 
 loginLink.addEventListener('click', () => {
-    toggleForms(loginForm, signupForm, inputLoginUsername, inputLoginPin);
+    toggleFormsVisibility(loginForm, signupForm, inputLoginUsername, inputLoginPin);
 });
 
 signupLink.addEventListener('click', () => {
-    toggleForms(signupForm, loginForm, inputSignupFullname, inputSignupPin);
+    toggleFormsVisibility(signupForm, loginForm, inputSignupFullname, inputSignupPin);
 });
 
 signupBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        removeErValText(inputSignupPin);
-        removeErValText(inputSignupFullname);
-        const fullname = inputSignupFullname.value;
-        const pin = inputSignupPin.value;
-        if (validateNotEmpty(inputSignupFullname)) {
-            if (validateFullname(fullname) && validateNotEmpty(inputSignupPin)) {
-                if (validatePin(pin, inputSignupPin)) {
-                    addUser(fullname, pin);
-                }
+    e.preventDefault();
+    removeErValText(inputSignupPin);
+    removeErValText(inputSignupFullname);
+    const fullname = inputSignupFullname.value;
+    const pin = inputSignupPin.value;
+    if (validateNotEmpty(inputSignupFullname)) {
+        if (validateFullname(fullname) && validateNotEmpty(inputSignupPin)) {
+            if (validatePin(pin, inputSignupPin)) {
+                addUser(fullname, pin);
             }
         }
     }
-);
+});
 
 loginBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        removeErValText(inputLoginPin);
-        removeErValText(inputLoginUsername);
-        const username = inputLoginUsername.value;
-        const pin = inputLoginPin.value;
-        const user = findUserByUsername(username);
-        if (validateNotEmpty(inputLoginUsername)) {
-            if (validateUsername(username) && validateNotEmpty(inputLoginPin)) {
-                if (validatePin(pin, inputLoginPin)) {
-                    if (user && findPinForUser(user, pin)) {
-                        currentAccount = user;
-
-                        clearInput(inputLoginUsername);
-                        clearInput(inputLoginPin);
-                        toggleForms(signupForm, loginForm, inputSignupFullname, inputSignupPin);
-                        toggleHeader();
-                    } else {
-                        showError(inputLoginUsername, 'Wrong username or PIN.');
-                    }
+    e.preventDefault();
+    removeErValText(inputLoginPin);
+    removeErValText(inputLoginUsername);
+    const username = inputLoginUsername.value;
+    const pin = inputLoginPin.value;
+    const user = findUserByUsername(username);
+    if (validateNotEmpty(inputLoginUsername)) {
+        if (validateUsername(username) && validateNotEmpty(inputLoginPin)) {
+            if (validatePin(pin, inputLoginPin)) {
+                if (user && findPinForUser(user, pin)) {
+                    currentAccount = user;
+                    clearInput(inputLoginUsername);
+                    clearInput(inputLoginPin);
+                    hideForm(loginForm);
+                    toggleHeader();
+                } else {
+                    showError(inputLoginUsername, 'Wrong username or PIN.');
                 }
             }
         }
     }
-);
+});
