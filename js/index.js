@@ -6,8 +6,8 @@ let Users = new Map([
         movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
         pin: 1111,
         cards: [
-            [5531_8796_4321_8765, '02/27', 346, 'Jonas Schmedtmann', 200],
-            [4276_1234_5678_9102, '05/27', 246, 'Jonas Schmedtmann', 500]
+            [5531_8796_4321_8765, '02/27', '346', 'Jonas Schmedtmann', 200],
+            [4276_1234_5678_9102, '05/27', '246', 'Jonas Schmedtmann', 500]
         ]
     }],
     ['Jessica Davis', {
@@ -15,7 +15,7 @@ let Users = new Map([
         movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
         pin: 2222,
         cards: [
-            [5398_7643_2109_8765, '03/33', 563, 'Jessica Davis', 332]
+            [5398_7643_2109_8765, '03/33', '563', 'Jessica Davis', 332]
         ]
     }],
     ['Steven Thomas Williams', {
@@ -23,7 +23,7 @@ let Users = new Map([
         movements: [200, -200, 340, -300, -20, 50, 400, -460],
         pin: 3333,
         cards: [
-            [6011_3456_7890_1234, '09/31', 212, 'Steven Thomas Williams', 621]
+            [6011_3456_7890_1234, '09/31', '212', 'Steven Thomas Williams', 621]
         ]
     }]
 ]);
@@ -43,12 +43,15 @@ const logoutBtn = document.querySelector(".logout-btn");
 const transactionsSection = document.querySelector('.transactions');
 const transactionsSectionHeader = document.querySelector('.transactions-header');
 const transactionsSectionCards = document.querySelector('.transactions-cards');
-const transactionsSectionCardsOverlay = document.querySelector('.transactions-cards .modal-overlay');
+const transactionsSectionCardsCarouselWrapper = document.querySelector('.cards-carousel-wrapper');
+const transactionsSectionCardsOverlay = document.querySelector('.transactions .modal-overlay');
 const transactionsSectionCardsCloseBtn = document.querySelector('.card-form-close-button');
 const addCardFormCardHolder = document.getElementById('cardHolder');
 const addCardFormCardNumber = document.getElementById('cardNumber');
 const addCardFormCVV = document.getElementById('cvv');
 const addCardFormExpDate = document.getElementById('expiryDate');
+const transactionsSectionCardsAddBtn = document.querySelector('.card-form-button');
+
 
 
 let currentAccount;
@@ -263,23 +266,8 @@ const checkForCards = () => {
             noCardsMessage.textContent = 'No cards available';
             transactionsSection.appendChild(noCardsMessage);
         } else {
-            currentAccount.cards.forEach(card => {
-                const cardElement = document.createElement('p');
-                cardElement.textContent = `Card: ${card}`;
-                transactionsSectionCards.appendChild(cardElement);
-            });
+            updateUICards();
         }
-
-        const buttonDiv = document.createElement('div');
-        buttonDiv.classList.add("button");
-        const button = document.createElement('button');
-        button.textContent = 'Add card';
-        button.addEventListener('click', () => {
-            console.log(123);
-            showElement(transactionsSectionCardsOverlay)
-        });
-        buttonDiv.appendChild(button);
-        transactionsSectionCards.appendChild(buttonDiv);
     }
 };
 
@@ -289,7 +277,7 @@ const displayDate = () => {
     const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
     const year = currentDate.getFullYear();
 
-    const dateText = `Дата: ${day}.${month}.${year}`;
+    const dateText = `Date: ${day}.${month}.${year}`;
     const dateElement = document.createElement('p');
     dateElement.textContent = dateText;
     transactionsSectionHeader.appendChild(dateElement);
@@ -332,3 +320,116 @@ transactionsSectionCardsOverlay.addEventListener("click", (e) => {
         clearInput(addCardFormCardHolder);
     }
 });
+
+const addCardToCurrentAccount = (cardNumber, expiryDate, cvv, cardHolder, balance) => {
+    if (currentAccount) {
+        const newCard = [cardNumber, expiryDate, cvv, cardHolder, balance];
+        if (!currentAccount.cards) currentAccount.cards = [];  // Создаем массив карт, если его еще нет
+        currentAccount.cards.push(newCard);
+        console.log(`Карта добавлена для ${currentAccount.fullname}`);
+        updateUICards();  // Обновляем отображение карт
+    } else {
+        console.log("Нет активного аккаунта для добавления карты.");
+    }
+};
+
+
+const updateUICards = () => {
+    transactionsSectionCardsCarouselWrapper.innerHTML = '';  // Очищаем существующие карточные элементы
+
+    if (currentAccount && currentAccount.cards.length > 0) {
+        currentAccount.cards.forEach((card, i) => {
+            const cardElement = document.createElement('div');
+
+            const cardPos = document.createElement('p');
+            cardPos.textContent = `Card ${i+1}`;
+            cardElement.appendChild(cardPos);
+            const cardNumber = document.createElement('p');
+            cardNumber.textContent = ` **** **** **** ${String(card[0]).slice(-4)}`;
+            cardElement.appendChild(cardNumber);
+            const cardExpiry = document.createElement('p');
+            cardExpiry.textContent = `${card[1]}`;
+            cardElement.appendChild(cardExpiry);
+            const cardBalance = document.createElement('p');
+            cardBalance.textContent = `${card[4]}$`;
+            cardElement.appendChild(cardBalance);
+
+            const cardImg = document.createElement('img');
+            cardImg.src = '../assets/img/card-template.png'
+            cardElement.appendChild(cardImg);
+
+            cardElement.classList.add('card-element')
+
+            transactionsSectionCardsCarouselWrapper.appendChild(cardElement);
+        });
+    } else {
+        const noCardsMessage = document.createElement('p');
+        noCardsMessage.textContent = 'No cards available';
+        transactionsSectionCardsCarouselWrapper.appendChild(noCardsMessage);
+    }
+
+    createAddCardButton();
+};
+
+let currentSlideIndex = 0;
+
+function moveSlide(direction) {
+    const totalSlides = document.querySelectorAll('.card-element').length;
+
+    // Обновляем индекс слайда в зависимости от направления
+    currentSlideIndex += direction;
+
+    if (currentSlideIndex < 0) {
+        currentSlideIndex = totalSlides - 1; // Перемещаемся к последнему слайду, если достигнут первый
+    } else if (currentSlideIndex >= totalSlides) {
+        currentSlideIndex = 0; // Перемещаемся к первому слайду, если достигнут последний
+    }
+
+    // Перемещаем карусель на соответствующий слайд
+    transactionsSectionCardsCarouselWrapper.style.transform = `translateX(-${currentSlideIndex * 128}%)`;
+}
+
+const handleAddCardFormSubmit = () => {
+    const cardNumber = addCardFormCardNumber.value;
+    const expiryDate = addCardFormExpDate.value;
+    const cvv = addCardFormCVV.value;
+    const cardHolder = addCardFormCardHolder.value;
+    const balance = 200;
+
+    addCardToCurrentAccount(cardNumber, expiryDate, cvv, cardHolder, balance);
+    hideElement(transactionsSectionCardsOverlay);
+    clearInput(addCardFormExpDate);
+    clearInput(addCardFormCardNumber);
+    clearInput(addCardFormCVV);
+    clearInput(addCardFormCardHolder);
+};
+
+
+transactionsSectionCardsAddBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    handleAddCardFormSubmit();
+});
+
+const createAddCardButton = () => {
+    // Удаляем уже существующую кнопку, если она есть
+    const existingButton = transactionsSectionCards.querySelector(".button");
+    if (existingButton) {
+        transactionsSectionCards.removeChild(existingButton);
+    }
+
+    // Создаем новую кнопку для добавления карты
+    const buttonDiv = document.createElement('div');
+    buttonDiv.classList.add("button");
+
+    const button = document.createElement('button');
+    button.textContent = 'Add card';
+
+    button.addEventListener('click', () => {
+        console.log('Кнопка добавления карты нажата');
+        showElement(transactionsSectionCardsOverlay);
+    });
+
+    buttonDiv.appendChild(button);
+    transactionsSectionCards.appendChild(buttonDiv);
+};
+

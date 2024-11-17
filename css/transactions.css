@@ -21,6 +21,12 @@
     transform: scale(1.04);
 }
 
+.transactions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .modal-overlay {
     display: block;
     position: fixed;
@@ -52,6 +58,13 @@
     top: 12%;
 
     gap: 70px;
+}
+
+.transactions-cards {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .card-form-img {
@@ -126,6 +139,81 @@
 
 .card-form-close-button:hover {
     transform: scale(1.04);
+}
+
+.cards-carousel-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden; /* скрыть элементы за пределами */
+}
+
+.cards-carousel-wrapper {
+    display: flex;
+    transition: transform 0.5s ease; /* плавный переход при смене слайда */
+}
+
+.card-element {
+    margin: 50px 0px -160px;
+    padding: 40px 120px 70px;
+    /*background-image: url(../assets/img/card-template.png);*/
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.card-element > :nth-child(1) {
+    position: relative;
+    top: -15px;
+    left: -25px;
+}
+
+.card-element > :nth-child(2) {
+    position: relative;
+    top: 47px;
+    left: 75px;
+}
+
+.card-element > :nth-child(3) {
+    position: relative;
+    top: 50px;
+    left: 168px;
+}
+
+.card-element > :nth-child(4) {
+    position: relative;
+    top: -40px;
+    left: 67px;
+    font-size: 30px;
+}
+
+.card-element p {
+    z-index: 1;
+}
+
+.card-element img {
+    position: relative;
+    top: -140px;
+    left: -65px;
+    width: 400px;
+}
+
+.cards-carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2em;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.cards-carousel-arrow.left {
+    left: 10px;
+}
+
+.cards-carousel-arrow.right {
+    right: 10px;
 }
 
 @media (max-width: 990px) {

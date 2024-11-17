@@ -64,22 +64,30 @@
 
         </div>
         <div class="transactions-cards">
-            <div id="modalOverlay" class="modal-overlay opacity-zero z-index-min">
-                <div class="card-form-modal-container">
-                    <div class="card-form-img">
-                        <img src="assets/img/card-template.png">
-                    </div>
-                    <div>
-                        <form id="cardForm" class="card-form-container">
-                            <label for="cardHolder" class="card-form-label">Cardholber</label>
-                            <input type="text" id="cardHolder" class="form-input" placeholder="Cardholber"
-                                   required>
+            <div class="cards-carousel-container">
+                <div class="cards-carousel-wrapper">
+                </div>
+                <button class="cards-carousel-arrow left" onclick="moveSlide(-1)">&#10094;</button>
+                <button class="cards-carousel-arrow right" onclick="moveSlide(1)">&#10095;</button>
+            </div>
 
-                            <label for="cardNumber" class="card-form-label">Card Number</label>
-                            <input type="text" id="cardNumber" class="form-input" maxlength="16"
-                                   placeholder="Card Number" required>
+        </div>
+        <div id="modalOverlay" class="modal-overlay opacity-zero z-index-min">
+            <div class="card-form-modal-container">
+                <div class="card-form-img">
+                    <img src="assets/img/card-template.png">
+                </div>
+                <div>
+                    <form id="cardForm" class="card-form-container">
+                        <label for="cardHolder" class="card-form-label">Cardholber</label>
+                        <input type="text" id="cardHolder" class="form-input" placeholder="Cardholber"
+                               required>
 
-                            <span>
+                        <label for="cardNumber" class="card-form-label">Card Number</label>
+                        <input type="text" id="cardNumber" class="form-input" maxlength="16"
+                               placeholder="Card Number" required>
+
+                        <span>
                                 <div>
                                     <label for="cvv" class="card-form-label">CVV</label>
                             <input type="text" id="cvv" class="form-input" maxlength="3" placeholder="CVV"
@@ -93,11 +101,10 @@
                                 </div>
                             </span>
 
-                            <button class="card-form-button">Add card</button>
-                        </form>
-                    </div>
-                    <button class="card-form-close-button">✖</button>
+                        <button class="card-form-button">Add card</button>
+                    </form>
                 </div>
+                <button class="card-form-close-button">✖</button>
             </div>
         </div>
 
