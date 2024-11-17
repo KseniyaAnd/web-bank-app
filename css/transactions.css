@@ -1,0 +1,147 @@
+.main .transactions .button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.main .transactions .button button {
+    height: 100%;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 20px;
+
+    background-color: #e4311d;
+    color: #050507;
+
+    cursor: pointer;
+
+    font-size: 20px;
+}
+
+.main .transactions .button button:hover {
+    transform: scale(1.04);
+}
+
+.modal-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.card-form-modal-container {
+    background-color: #050507;
+    width: 900px;
+    border-radius: 30px;
+    margin: 20px 50px;
+    padding: 50px 40px;
+    color: #ffffff;
+    font-size: 16px;
+
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 12%;
+
+    gap: 70px;
+}
+
+.card-form-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-form-img img {
+    width: 400px;
+}
+
+.card-form-container span{
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.card-form-container span #cvv{
+    margin-right: 10px;
+}
+
+.card-form-label {
+    display: flex;
+    align-items: center;
+}
+
+.form-input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0 25px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    border-radius: 20px;
+}
+
+.form-input:focus {
+    outline: none;
+}
+
+/* Стиль для кнопки */
+.card-form-button {
+    width: 100%;
+    height: 100%;
+    margin-top: 20px;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 20px;
+
+    background-color: #e4311d;
+    color: #050507;
+
+    cursor: pointer;
+
+    font-size: 20px;
+}
+
+.card-form-button:hover {
+    transform: scale(1.04);
+}
+
+.card-form-close-button {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 18px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #fdfdfd;
+}
+
+.card-form-close-button:hover {
+    transform: scale(1.04);
+}
+
+@media (max-width: 990px) {
+    .card-form-modal-container {
+        width: 500px;
+    }
+
+    .card-form-img {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .card-form-modal-container {
+        width: 300px;
+        padding: 30px 20px;
+    }
+}
+

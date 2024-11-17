@@ -5,16 +5,26 @@ let Users = new Map([
         username: 'JS',
         movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
         pin: 1111,
+        cards: [
+            [5531_8796_4321_8765, '02/27', 346, 'Jonas Schmedtmann', 200],
+            [4276_1234_5678_9102, '05/27', 246, 'Jonas Schmedtmann', 500]
+        ]
     }],
     ['Jessica Davis', {
         username: 'JD',
         movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
         pin: 2222,
+        cards: [
+            [5398_7643_2109_8765, '03/33', 563, 'Jessica Davis', 332]
+        ]
     }],
     ['Steven Thomas Williams', {
         username: 'STW',
         movements: [200, -200, 340, -300, -20, 50, 400, -460],
         pin: 3333,
+        cards: [
+            [6011_3456_7890_1234, '09/31', 212, 'Steven Thomas Williams', 621]
+        ]
     }]
 ]);
 
@@ -30,6 +40,16 @@ const inputSignupPin = document.querySelector('.signup__input--pin');
 const signupBtn = document.querySelector(".signup-btn");
 const loginBtn = document.querySelector(".login-btn");
 const logoutBtn = document.querySelector(".logout-btn");
+const transactionsSection = document.querySelector('.transactions');
+const transactionsSectionHeader = document.querySelector('.transactions-header');
+const transactionsSectionCards = document.querySelector('.transactions-cards');
+const transactionsSectionCardsOverlay = document.querySelector('.transactions-cards .modal-overlay');
+const transactionsSectionCardsCloseBtn = document.querySelector('.card-form-close-button');
+const addCardFormCardHolder = document.getElementById('cardHolder');
+const addCardFormCardNumber = document.getElementById('cardNumber');
+const addCardFormCVV = document.getElementById('cvv');
+const addCardFormExpDate = document.getElementById('expiryDate');
+
 
 let currentAccount;
 
@@ -38,21 +58,21 @@ const clearInput = (input) => {
 };
 
 const toggleFormsVisibility = (activeForm, inactiveForm, usernameInput, pinInput) => {
-    hideForm(inactiveForm);
-    showForm(activeForm);
+    hideElement(inactiveForm);
+    showElement(activeForm);
 
     clearInput(usernameInput);
     clearInput(pinInput);
 };
 
-const showForm = (form) => {
-    form.classList.remove('opacity-zero');
-    form.classList.add('opacity-one', 'z-index-1');
+const showElement = (el) => {
+    el.classList.remove('opacity-zero', 'z-index-min');
+    el.classList.add('opacity-one', 'z-index-plus');
 };
 
-const hideForm = (form) => {
-    form.classList.add('opacity-zero');
-    form.classList.remove('opacity-one', 'z-index-1');
+const hideElement = (el) => {
+    el.classList.add('opacity-zero', 'z-index-min');
+    el.classList.remove('opacity-one', 'z-index-plus');
 };
 
 const toggleHeader = () => {
@@ -121,8 +141,6 @@ const addUser = (fullname, pin) => {
         clearInput(inputSignupFullname);
         clearInput(inputSignupPin);
         currentAccount = newUser;
-        hideForm(signupForm);
-        toggleHeader();
     } else {
         console.log(`Account for ${fullname} already exists.`);
     }
@@ -194,6 +212,11 @@ signupBtn.addEventListener('click', (e) => {
         if (validateFullname(fullname) && validateNotEmpty(inputSignupPin)) {
             if (validatePin(pin, inputSignupPin)) {
                 addUser(fullname, pin);
+
+                updateUI();
+                hideElement(signupForm);
+                showElement(transactionsSection);
+                toggleHeader();
             }
         }
     }
@@ -213,8 +236,10 @@ loginBtn.addEventListener('click', (e) => {
                     currentAccount = user;
                     clearInput(inputLoginUsername);
                     clearInput(inputLoginPin);
-                    hideForm(loginForm);
+                    hideElement(loginForm);
                     toggleHeader();
+                    showElement(transactionsSection);
+                    updateUI();
                 } else {
                     showError(inputLoginUsername, 'Wrong username or PIN.');
                 }
@@ -227,5 +252,83 @@ logoutBtn.addEventListener('click', (e) => {
     e.preventDefault();
     currentAccount = undefined;
     toggleHeader();
-    showForm(loginForm);
+    showElement(loginForm);
+});
+
+
+const checkForCards = () => {
+    if (currentAccount) {
+        if (!currentAccount.cards || currentAccount.cards.length === 0) {
+            const noCardsMessage = document.createElement('p');
+            noCardsMessage.textContent = 'No cards available';
+            transactionsSection.appendChild(noCardsMessage);
+        } else {
+            currentAccount.cards.forEach(card => {
+                const cardElement = document.createElement('p');
+                cardElement.textContent = `Card: ${card}`;
+                transactionsSectionCards.appendChild(cardElement);
+            });
+        }
+
+        const buttonDiv = document.createElement('div');
+        buttonDiv.classList.add("button");
+        const button = document.createElement('button');
+        button.textContent = 'Add card';
+        button.addEventListener('click', () => {
+            console.log(123);
+            showElement(transactionsSectionCardsOverlay)
+        });
+        buttonDiv.appendChild(button);
+        transactionsSectionCards.appendChild(buttonDiv);
+    }
+};
+
+const displayDate = () => {
+    const currentDate = new Date();
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
+    const year = currentDate.getFullYear();
+
+    const dateText = `Дата: ${day}.${month}.${year}`;
+    const dateElement = document.createElement('p');
+    dateElement.textContent = dateText;
+    transactionsSectionHeader.appendChild(dateElement);
+};
+
+const displayWelcomeMessage = () => {
+    if (currentAccount) {
+        const welcomeMessage = `Welcome, ${currentAccount.fullname}!`;
+        const welcomeElement = document.createElement('p');
+        welcomeElement.textContent = welcomeMessage;
+        welcomeElement.style.fontWeight = 'bold';
+        transactionsSectionHeader.appendChild(welcomeElement);
+    }
+};
+
+const updateUI = () => {
+    if (currentAccount) {
+        checkForCards();
+
+        displayWelcomeMessage();
+
+        displayDate();
+    }
+};
+
+transactionsSectionCardsCloseBtn.addEventListener("click", () => {
+    hideElement(transactionsSectionCardsOverlay)
+    clearInput(addCardFormExpDate)
+    clearInput(addCardFormCardNumber)
+    clearInput(addCardFormCVV)
+    clearInput(addCardFormCardHolder)
+});
+
+transactionsSectionCardsOverlay.addEventListener("click", (e) => {
+    if (e.target === transactionsSectionCardsOverlay) {
+        hideElement(transactionsSectionCardsOverlay);
+        clearInput(addCardFormExpDate);
+        clearInput(addCardFormCardNumber);
+        clearInput(addCardFormCVV);
+        clearInput(addCardFormCardHolder);
+    }
 });

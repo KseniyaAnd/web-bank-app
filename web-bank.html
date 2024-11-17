@@ -5,6 +5,7 @@
     <title>BankWebApp | App</title>
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/transactions.css">
 </head>
 <body>
 <header class="header opacity-zero">
@@ -57,6 +58,51 @@
         <button class="signup-btn">Continue</button>
         <p class="auth-link login-link">Log in.</p>
     </form>
+
+    <section class="transactions ">
+        <div class="transactions-header">
+
+        </div>
+        <div class="transactions-cards">
+            <div id="modalOverlay" class="modal-overlay opacity-zero z-index-min">
+                <div class="card-form-modal-container">
+                    <div class="card-form-img">
+                        <img src="assets/img/card-template.png">
+                    </div>
+                    <div>
+                        <form id="cardForm" class="card-form-container">
+                            <label for="cardHolder" class="card-form-label">Cardholber</label>
+                            <input type="text" id="cardHolder" class="form-input" placeholder="Cardholber"
+                                   required>
+
+                            <label for="cardNumber" class="card-form-label">Card Number</label>
+                            <input type="text" id="cardNumber" class="form-input" maxlength="16"
+                                   placeholder="Card Number" required>
+
+                            <span>
+                                <div>
+                                    <label for="cvv" class="card-form-label">CVV</label>
+                            <input type="text" id="cvv" class="form-input" maxlength="3" placeholder="CVV"
+                                   required>
+                                </div>
+
+                                <div>
+                                     <label for="expiryDate" class="card-form-label">Exp Date</label>
+                            <input type="text" id="expiryDate" class="form-input" maxlength="5" placeholder="MM/YY"
+                                   required>
+                                </div>
+                            </span>
+
+                            <button class="card-form-button">Add card</button>
+                        </form>
+                    </div>
+                    <button class="card-form-close-button">✖</button>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
 </main>
 <script src="js/index.js"></script>
 </body>

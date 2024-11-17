@@ -6,9 +6,15 @@
     opacity: 1;
 }
 
-.z-index-1 {
+.z-index-plus {
     z-index: 1;
 }
+
+.z-index-min {
+    z-index: -1;
+}
+
+
 
 .main .auth-form {
     background-color: #050507;
