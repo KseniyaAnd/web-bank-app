@@ -43,6 +43,7 @@ const logoutBtn = document.querySelector(".logout-btn");
 const transactionsSection = document.querySelector('.transactions');
 const transactionsSectionHeader = document.querySelector('.transactions-header');
 const transactionsSectionCards = document.querySelector('.transactions-cards');
+const transactionsSectionCardsCarouselContainer = document.querySelector('.cards-carousel-container');
 const transactionsSectionCardsCarouselWrapper = document.querySelector('.cards-carousel-wrapper');
 const transactionsSectionCardsOverlay = document.querySelector('.transactions .modal-overlay');
 const transactionsSectionCardsCloseBtn = document.querySelector('.card-form-close-button');
@@ -51,7 +52,7 @@ const addCardFormCardNumber = document.getElementById('cardNumber');
 const addCardFormCVV = document.getElementById('cvv');
 const addCardFormExpDate = document.getElementById('expiryDate');
 const transactionsSectionCardsAddBtn = document.querySelector('.card-form-button');
-
+const transactionsSectionCardsCarouselArrow = document.querySelectorAll('.cards-carousel-arrow');
 
 
 let currentAccount;
@@ -69,14 +70,26 @@ const toggleFormsVisibility = (activeForm, inactiveForm, usernameInput, pinInput
 };
 
 const showElement = (el) => {
-    el.classList.remove('opacity-zero', 'z-index-min');
-    el.classList.add('opacity-one', 'z-index-plus');
+    if (el) {
+        const elements = Array.isArray(el) || el instanceof NodeList ? el : [el];
+        elements.forEach(e => {
+            e.classList.remove('opacity-zero', 'z-index-min');
+            e.classList.add('opacity-one', 'z-index-plus');
+        });
+    }
 };
 
+
 const hideElement = (el) => {
-    el.classList.add('opacity-zero', 'z-index-min');
-    el.classList.remove('opacity-one', 'z-index-plus');
+    if (el) {
+        const elements = Array.isArray(el) || el instanceof NodeList ? el : [el];
+        elements.forEach(e => {
+            e.classList.add('opacity-zero', 'z-index-min');
+            e.classList.remove('opacity-one', 'z-index-plus');
+        });
+    }
 };
+
 
 const toggleHeader = () => {
     if (currentAccount) {
@@ -132,10 +145,17 @@ const validateNotEmpty = (inputElement) => {
 };
 
 const addUser = (fullname, pin) => {
+    if (!validateFullname(fullname) || !validatePin(pin, inputSignupPin)) {
+        return; // Прекращаем выполнение, если полное имя или PIN не валидны
+    }
+
+    const username = createUsername(fullname);
     const newUser = {
-        username: createUsername(fullname),
+        fullname: fullname, // Добавляем full name
+        username: username,
         movements: [],
-        pin: pin,
+        pin: Number(pin),
+        cards: []  // Добавляем пустой массив карт
     };
 
     if (!Users.has(fullname)) {
@@ -145,9 +165,10 @@ const addUser = (fullname, pin) => {
         clearInput(inputSignupPin);
         currentAccount = newUser;
     } else {
-        console.log(`Account for ${fullname} already exists.`);
+        showError(inputSignupFullname, `Account for ${fullname} already exists.`);
     }
 };
+
 
 const findUserByUsername = (username) => {
     let foundUser = null;
@@ -256,20 +277,8 @@ logoutBtn.addEventListener('click', (e) => {
     currentAccount = undefined;
     toggleHeader();
     showElement(loginForm);
+    hideElement(transactionsSection)
 });
-
-
-const checkForCards = () => {
-    if (currentAccount) {
-        if (!currentAccount.cards || currentAccount.cards.length === 0) {
-            const noCardsMessage = document.createElement('p');
-            noCardsMessage.textContent = 'No cards available';
-            transactionsSection.appendChild(noCardsMessage);
-        } else {
-            updateUICards();
-        }
-    }
-};
 
 const displayDate = () => {
     const currentDate = new Date();
@@ -284,21 +293,21 @@ const displayDate = () => {
 };
 
 const displayWelcomeMessage = () => {
-    if (currentAccount) {
-        const welcomeMessage = `Welcome, ${currentAccount.fullname}!`;
-        const welcomeElement = document.createElement('p');
-        welcomeElement.textContent = welcomeMessage;
-        welcomeElement.style.fontWeight = 'bold';
-        transactionsSectionHeader.appendChild(welcomeElement);
-    }
+
+    const welcomeMessage = `Welcome, ${currentAccount.fullname}!`;
+    const welcomeElement = document.createElement('p');
+    welcomeElement.textContent = welcomeMessage;
+    welcomeElement.style.fontWeight = 'bold';
+    transactionsSectionHeader.appendChild(welcomeElement);
 };
 
 const updateUI = () => {
     if (currentAccount) {
-        checkForCards();
+        updateUICards();
 
+        showElement(transactionsSection);
+        transactionsSectionHeader.innerHTML = '';
         displayWelcomeMessage();
-
         displayDate();
     }
 };
@@ -326,10 +335,7 @@ const addCardToCurrentAccount = (cardNumber, expiryDate, cvv, cardHolder, balanc
         const newCard = [cardNumber, expiryDate, cvv, cardHolder, balance];
         if (!currentAccount.cards) currentAccount.cards = [];  // Создаем массив карт, если его еще нет
         currentAccount.cards.push(newCard);
-        console.log(`Карта добавлена для ${currentAccount.fullname}`);
-        updateUICards();  // Обновляем отображение карт
-    } else {
-        console.log("Нет активного аккаунта для добавления карты.");
+        updateUICards();
     }
 };
 
@@ -337,39 +343,29 @@ const addCardToCurrentAccount = (cardNumber, expiryDate, cvv, cardHolder, balanc
 const updateUICards = () => {
     transactionsSectionCardsCarouselWrapper.innerHTML = '';  // Очищаем существующие карточные элементы
 
-    if (currentAccount && currentAccount.cards.length > 0) {
+    if (currentAccount && currentAccount.cards?.length > 0) {
+        showElement(transactionsSectionCardsCarouselArrow);
+
         currentAccount.cards.forEach((card, i) => {
             const cardElement = document.createElement('div');
-
-            const cardPos = document.createElement('p');
-            cardPos.textContent = `Card ${i+1}`;
-            cardElement.appendChild(cardPos);
-            const cardNumber = document.createElement('p');
-            cardNumber.textContent = ` **** **** **** ${String(card[0]).slice(-4)}`;
-            cardElement.appendChild(cardNumber);
-            const cardExpiry = document.createElement('p');
-            cardExpiry.textContent = `${card[1]}`;
-            cardElement.appendChild(cardExpiry);
-            const cardBalance = document.createElement('p');
-            cardBalance.textContent = `${card[4]}$`;
-            cardElement.appendChild(cardBalance);
-
-            const cardImg = document.createElement('img');
-            cardImg.src = '../assets/img/card-template.png'
-            cardElement.appendChild(cardImg);
-
-            cardElement.classList.add('card-element')
-
+            cardElement.classList.add('card-element');
+            cardElement.innerHTML = `
+                <p>Card ${i + 1}</p>
+                <p>**** **** **** ${String(card[0]).slice(-4)}</p>
+                <p>${card[1]}</p>
+                <p>${card[4]}$</p>
+                <img src="../assets/img/card-template.png" alt="Card Image">
+            `;
             transactionsSectionCardsCarouselWrapper.appendChild(cardElement);
         });
     } else {
-        const noCardsMessage = document.createElement('p');
-        noCardsMessage.textContent = 'No cards available';
-        transactionsSectionCardsCarouselWrapper.appendChild(noCardsMessage);
+        hideElement(transactionsSectionCardsCarouselArrow);
+        transactionsSectionCardsCarouselWrapper.innerHTML = '<p>No cards available</p>';
     }
 
     createAddCardButton();
 };
+
 
 let currentSlideIndex = 0;
 
