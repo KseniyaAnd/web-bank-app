@@ -101,48 +101,99 @@ const toggleHeader = () => {
     }
 };
 
-const validatePin = (pin, input) => {
-    const pinString = String(pin);
-    if (pinString.length >= 4 && /^\d+$/.test(pinString)) {
+const validatePin = (inputElement) => {
+    removeErValText(inputElement);
+    const pin = inputElement.value;
+    if (pin.length >= 4 && /^\d+$/.test(pin)) {
         return true;
     } else {
-        showError(input, 'PIN must consist of at least four digits and only digits.');
+        showError(inputElement, 'PIN должен состоять минимум из четырех цифр и только из цифр.');
         return false;
     }
 };
 
-const validateFullname = (fullname) => {
-    const words = fullname.trim().split(/\s+/);
+const validateFullname = (inputElement) => {
+    removeErValText(inputElement);
+    const fullname = inputElement.value.trim();
+    const words = fullname.split(/\s+/);
     if (words.length < 2) {
-        showError(inputSignupFullname, 'Fullname must contain more than two words.');
+        showError(inputElement, 'Полное имя должно содержать больше двух слов.');
         return false;
     }
     for (const word of words) {
         if (!/^[A-ZА-Я][a-zа-я]*$/.test(word)) {
-            showError(inputSignupFullname, 'Fullname must consist of only a letter and each word begins with a capital letter.');
+            showError(inputElement, 'Полное имя должно состоять из букв, и каждое слово должно начинаться с заглавной буквы.');
             return false;
         }
     }
     return true;
 };
 
-const validateUsername = (username) => {
+const validateUsername = (inputElement) => {
+    removeErValText(inputElement);
+    const username = inputElement.value;
     const usernameRegex = /^[A-Za-zА-Яа-яЁё]+$/;
     if (!usernameRegex.test(username)) {
-        showError(inputLoginUsername, 'Username must consist of the first letters of full name.');
+        showError(inputElement, 'Имя пользователя должно состоять из первых букв полного имени.');
         return false;
     }
     return true;
 };
 
 const validateNotEmpty = (inputElement) => {
+    removeErValText(inputElement);
     if (inputElement.value.trim() === '') {
-        showError(inputElement, 'Field is empty.');
+        showError(inputElement, 'Поле не может быть пустым.');
         return false;
     } else {
         return true;
     }
 };
+
+const validateCardNumber = (inputElement) => {
+    removeErValText(inputElement);
+    const cardNumber = inputElement.value.replace(/\s/g, ''); // Удаляем пробелы
+    const regex = /^\d{16}$/;
+    if (!regex.test(cardNumber)) {
+        showError(inputElement, 'Номер карты должен состоять из 16 цифр.');
+        return false;
+    }
+    return true;
+};
+
+const validateExpiryDate = (inputElement) => {
+    removeErValText(inputElement);
+    const expiryDate = inputElement.value;
+    const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+    if (!regex.test(expiryDate)) {
+        showError(inputElement, 'Срок действия карты должен быть в формате MM/YY.');
+        return false;
+    }
+
+    const [month, year] = expiryDate.split('/');
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear() % 100;
+    const currentMonth = currentDate.getMonth() + 1;
+
+    if (parseInt(year) < currentYear || (parseInt(year) === currentYear && parseInt(month) < currentMonth)) {
+        showError(inputElement, 'Срок действия карты уже истек.');
+        return false;
+    }
+    return true;
+};
+
+const validateCVV = (inputElement) => {
+    removeErValText(inputElement);
+    const cvv = inputElement.value;
+    const regex = /^\d{3}$/;
+    if (!regex.test(cvv)) {
+        showError(inputElement, 'CVV должен состоять из 3 цифр.');
+        return false;
+    }
+    return true;
+};
+
+
 
 const addUser = (fullname, pin) => {
     if (!validateFullname(fullname) || !validatePin(pin, inputSignupPin)) {
@@ -194,8 +245,7 @@ const createUsername = (fullname) => {
 
 const createErValText = (text, referenceElement) => {
     const erText = document.createElement('p');
-    erText.style.fontSize = '16px';
-    erText.style.color = '#f8d7da';
+    erText.classList.add('input-error-text')
     erText.textContent = text;
     referenceElement.after(erText);
 };
@@ -228,14 +278,11 @@ signupLink.addEventListener('click', () => {
 
 signupBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    removeErValText(inputSignupPin);
-    removeErValText(inputSignupFullname);
-    const fullname = inputSignupFullname.value;
-    const pin = inputSignupPin.value;
+
     if (validateNotEmpty(inputSignupFullname)) {
-        if (validateFullname(fullname) && validateNotEmpty(inputSignupPin)) {
-            if (validatePin(pin, inputSignupPin)) {
-                addUser(fullname, pin);
+        if (validateFullname(inputSignupFullname) && validateNotEmpty(inputSignupPin)) {
+            if (validatePin(inputSignupPin)) {
+                addUser(inputSignupFullname.value, inputSignupPin.value);
 
                 updateUI();
                 hideElement(signupForm);
@@ -250,13 +297,12 @@ loginBtn.addEventListener('click', (e) => {
     e.preventDefault();
     removeErValText(inputLoginPin);
     removeErValText(inputLoginUsername);
-    const username = inputLoginUsername.value;
-    const pin = inputLoginPin.value;
-    const user = findUserByUsername(username);
+    const user = findUserByUsername(inputLoginUsername.value);
+
     if (validateNotEmpty(inputLoginUsername)) {
-        if (validateUsername(username) && validateNotEmpty(inputLoginPin)) {
-            if (validatePin(pin, inputLoginPin)) {
-                if (user && findPinForUser(user, pin)) {
+        if (validateUsername(inputLoginUsername) && validateNotEmpty(inputLoginPin)) {
+            if (validatePin(inputLoginPin)) {
+                if (user && findPinForUser(user, inputLoginPin.value)) {
                     currentAccount = user;
                     clearInput(inputLoginUsername);
                     clearInput(inputLoginPin);
@@ -372,7 +418,6 @@ let currentSlideIndex = 0;
 function moveSlide(direction) {
     const totalSlides = document.querySelectorAll('.card-element').length;
 
-    // Обновляем индекс слайда в зависимости от направления
     currentSlideIndex += direction;
 
     if (currentSlideIndex < 0) {
@@ -381,23 +426,35 @@ function moveSlide(direction) {
         currentSlideIndex = 0; // Перемещаемся к первому слайду, если достигнут последний
     }
 
-    // Перемещаем карусель на соответствующий слайд
     transactionsSectionCardsCarouselWrapper.style.transform = `translateX(-${currentSlideIndex * 128}%)`;
 }
 
-const handleAddCardFormSubmit = () => {
-    const cardNumber = addCardFormCardNumber.value;
-    const expiryDate = addCardFormExpDate.value;
-    const cvv = addCardFormCVV.value;
-    const cardHolder = addCardFormCardHolder.value;
-    const balance = 200;
+addCardFormCardNumber.addEventListener('input', (event) => {
+    let input = event.target.value.replace(/\s+/g, ''); // Удаляем все пробелы
+    if (isNaN(input)) {
+        input = input.slice(0, -1); // Удаляем последний символ, если это не цифра
+    }
 
-    addCardToCurrentAccount(cardNumber, expiryDate, cvv, cardHolder, balance);
-    hideElement(transactionsSectionCardsOverlay);
-    clearInput(addCardFormExpDate);
-    clearInput(addCardFormCardNumber);
-    clearInput(addCardFormCVV);
-    clearInput(addCardFormCardHolder);
+    // Добавляем пробелы после каждых 4 цифр
+    event.target.value = input.replace(/(\d{4})(?=\d)/g, '$1 ');
+});
+
+
+const handleAddCardFormSubmit = () => {
+    if (validateNotEmpty(addCardFormCardHolder) && validateFullname(addCardFormCardHolder)) {
+        if (validateNotEmpty(addCardFormCardNumber) &&  validateCardNumber(addCardFormCardNumber)) {
+            if (validateNotEmpty(addCardFormCVV) && validateCVV(addCardFormCVV)) {
+                if (validateNotEmpty(addCardFormExpDate) && validateExpiryDate(addCardFormExpDate)) {
+                    addCardToCurrentAccount(addCardFormCardNumber.value, addCardFormExpDate.value, addCardFormCVV.value, addCardFormCardHolder.value, 200);
+                    hideElement(transactionsSectionCardsOverlay);
+                    clearInput(addCardFormExpDate);
+                    clearInput(addCardFormCardNumber);
+                    clearInput(addCardFormCVV);
+                    clearInput(addCardFormCardHolder);
+                }
+            }
+        }
+    }
 };
 
 

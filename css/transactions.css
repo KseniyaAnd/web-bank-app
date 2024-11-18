@@ -227,6 +227,10 @@
     right: 10px;
 }
 
+.card-form-container .input-error-text{
+    margin-top: -20px;
+}
+
 @media (max-width: 990px) {
     .card-form-modal-container {
         width: 500px;

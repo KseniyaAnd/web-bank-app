@@ -69,6 +69,11 @@
     background-color: #f8d7da;
 }
 
+.input-error-text {
+    font-size: 16px;
+    color: #f8d7da;
+}
+
 
 @media (max-width: 600px) {
     .main .auth-form {
