@@ -655,8 +655,11 @@ const displayMovements = (account) => {
             }
 
             // Перебираем все движения для карты
-            movements.forEach((movement, i) => {
-                const movementDate = new Date(movementsDates[i]);
+            movements
+                ?.slice() // Создаем копию массива, чтобы не изменить оригинальный
+                .reverse()
+                .forEach((movement, i) => {
+                const movementDate = new Date(movementsDates[movements.length - 1 - i]);
                 const formattedDate = `${String(movementDate.getDate()).padStart(2, '0')}.${String(movementDate.getMonth() + 1).padStart(2, '0')}.${movementDate.getFullYear()}`;
                 const movementType = movement > 0 ? 'deposit' : 'withdrawal';
 
