@@ -125,17 +125,17 @@ const transactionsSectionCardsAddBtn = document.querySelector('.card-form-button
 const transactionsSectionCardsCarouselArrow = document.querySelectorAll('.cards-carousel-arrow');
 const transactionsMovments = document.querySelector('.transactions-movements');
 const btnOpTransfer = document.querySelector('.form__btn--transfer');
-const btnOpLoan = document.querySelector('.form__btn--loan');
 const btnOpClose = document.querySelector('.form__btn--close');
-const btnOpSort = document.querySelector('.btn--sort');
 
 const inputTransferTo = document.querySelector('.form__input--to');
 const inputTransferAmount = document.querySelector('.form__input--amount');
-const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-let currentAccount;
+let labelTimer = document.querySelector('.timer');
+
+
+let currentAccount, timer;
 
 const clearInput = (input) => {
     input.value = '';
@@ -384,6 +384,9 @@ signupBtn.addEventListener('click', (e) => {
                 hideElement(signupForm);
                 showElement(transactionsSection);
                 toggleHeader();
+
+                if (timer) clearInterval(timer);
+                timer = startLogOutTimer();
             }
         }
     }
@@ -406,6 +409,10 @@ loginBtn.addEventListener('click', (e) => {
                     toggleHeader();
                     showElement(transactionsSection);
                     updateUI();
+
+                    if (timer) clearInterval(timer);
+                    timer = startLogOutTimer();
+
                 } else {
                     showError(inputLoginUsername, 'Wrong username or PIN.');
                 }
@@ -430,17 +437,22 @@ const displayDate = () => {
 
     const dateText = `Date: ${day}.${month}.${year}`;
     const dateElement = document.createElement('p');
+    dateElement.style.width = '100%'
+    dateElement.style.color = 'white'
     dateElement.textContent = dateText;
-    transactionsSectionHeader.appendChild(dateElement);
+    transactionsSectionHeader.after(dateElement);
 };
 
 const displayWelcomeMessage = () => {
+    transactionsSectionHeader.innerHTML = `
+        <p style="flex: 1"> Welcome, ${currentAccount.fullname}! </p>
+        <p class="logout-timer">
+            You will be logged out in <span class="timer">05:00</span>
+        </p>
+    `
 
-    const welcomeMessage = `Welcome, ${currentAccount.fullname}!`;
-    const welcomeElement = document.createElement('p');
-    welcomeElement.textContent = welcomeMessage;
-    welcomeElement.style.fontWeight = 'bold';
-    transactionsSectionHeader.appendChild(welcomeElement);
+    labelTimer = document.querySelector('.timer');
+    startLogOutTimer();
 };
 
 const updateUI = () => {
@@ -449,7 +461,6 @@ const updateUI = () => {
         displayMovements(currentAccount);
 
         showElement(transactionsSection);
-        transactionsSectionHeader.innerHTML = '';
         displayWelcomeMessage();
         displayDate();
     }
@@ -575,6 +586,9 @@ const handleAddCardFormSubmit = () => {
 transactionsSectionCardsAddBtn.addEventListener('click', (e) => {
     e.preventDefault();
     handleAddCardFormSubmit();
+
+    if (timer) clearInterval(timer);
+    timer = startLogOutTimer();
 });
 
 const createAddCardButton = () => {
@@ -641,7 +655,7 @@ const displayMovements = (account) => {
             }
 
             // Перебираем все движения для карты
-            movements?.forEach((movement, i) => {
+            movements.forEach((movement, i) => {
                 const movementDate = new Date(movementsDates[i]);
                 const formattedDate = `${String(movementDate.getDate()).padStart(2, '0')}.${String(movementDate.getMonth() + 1).padStart(2, '0')}.${movementDate.getFullYear()}`;
                 const movementType = movement > 0 ? 'deposit' : 'withdrawal';
@@ -692,6 +706,9 @@ btnOpTransfer.addEventListener('click', function (e) {
 
                                 updateUICards()
                                 updateUI(currentAccount);
+
+                                if (timer) clearInterval(timer);
+                                timer = startLogOutTimer();
                             } else {
                                 showError(inputTransferAmount, 'You can not trasfer to trasfering card.');
                             }
@@ -744,9 +761,10 @@ btnOpClose.addEventListener('click', function (e) {
         hideElement(transactionsSection)
 
         console.log('deleted')
-    }
+        if (timer) clearInterval(timer);
+        inputCloseUsername.value = inputClosePin.value = '';
 
-    inputCloseUsername.value = inputClosePin.value = '';
+    }
 });
 
 inputTransferTo.addEventListener('input', (event) => {
@@ -757,3 +775,31 @@ inputTransferTo.addEventListener('input', (event) => {
 
     event.target.value = input.replace(/(\d{4})(?=\d)/g, '$1 ');
 });
+
+const startLogOutTimer = () => {
+    const tick = () => {
+        const min = String(Math.trunc(time / 60)).padStart(2, 0);
+        const sec = String(time % 60).padStart(2, 0);
+
+        labelTimer.textContent = `${min}:${sec}`;
+
+        if (time === 0) {
+            clearInterval(timer);
+
+            currentAccount = undefined;
+            toggleHeader();
+            showElement(loginForm);
+            hideElement(transactionsSection)
+        }
+
+        time--;
+    };
+
+    let time = 300;
+
+    tick();
+    const timer = setInterval(tick, 1000);
+
+    return timer;
+};
+
