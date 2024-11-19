@@ -428,6 +428,7 @@ logoutBtn.addEventListener('click', (e) => {
     toggleHeader();
     showElement(loginForm);
     hideElement(transactionsSection)
+    if (timer) clearInterval(timer);
 });
 
 const displayDate = () => {
@@ -452,7 +453,6 @@ const displayWelcomeMessage = () => {
     `
 
     labelTimer = document.querySelector('.timer');
-    startLogOutTimer();
 };
 
 const updateUI = () => {
@@ -794,6 +794,8 @@ const startLogOutTimer = () => {
             showElement(loginForm);
             hideElement(transactionsSection)
         }
+
+        console.log(time)
 
         time--;
     };
