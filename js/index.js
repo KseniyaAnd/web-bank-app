@@ -111,7 +111,8 @@ const signupBtn = document.querySelector(".signup-btn");
 const loginBtn = document.querySelector(".login-btn");
 const logoutBtn = document.querySelector(".logout-btn");
 const transactionsSection = document.querySelector('.transactions');
-const transactionsSectionHeader = document.querySelector('.transactions-header');
+const transactionsSectionHeaderWelcomeTimer = document.querySelector('.transactions-header-welcome-timer');
+const transactionsSectionHeaderDate = document.querySelector('.transactions-header-date');
 const transactionsSectionCards = document.querySelector('.transactions-cards');
 const transactionsSectionCardsCarouselContainer = document.querySelector('.cards-carousel-container');
 const transactionsSectionCardsCarouselWrapper = document.querySelector('.cards-carousel-wrapper');
@@ -436,15 +437,14 @@ const displayDate = () => {
     const year = currentDate.getFullYear();
 
     const dateText = `Date: ${day}.${month}.${year}`;
-    const dateElement = document.createElement('p');
-    dateElement.style.width = '100%'
-    dateElement.style.color = 'white'
-    dateElement.textContent = dateText;
-    transactionsSectionHeader.after(dateElement);
-};
+    transactionsSectionHeaderDate.innerHTML = `<p style="width: 100%; color: white">
+        ${dateText}
+    </p>`
+}
+;
 
 const displayWelcomeMessage = () => {
-    transactionsSectionHeader.innerHTML = `
+    transactionsSectionHeaderWelcomeTimer.innerHTML = `
         <p style="flex: 1"> Welcome, ${currentAccount.fullname}! </p>
         <p class="logout-timer">
             You will be logged out in <span class="timer">05:00</span>
@@ -646,8 +646,8 @@ const displayMovements = (account) => {
 
             if (movements?.length === 0) {
                 const emptyMessage = `
-                <div class="movement-row">
-                    <p>Card ${index + 1}: No transactions available</p>
+                <div class="movement__row-nomov">
+                    <p>No movements available</p>
                 </div>
             `;
                 transactionsMovments.insertAdjacentHTML('beforeend', emptyMessage);

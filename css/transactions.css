@@ -37,8 +37,12 @@
     height: 615px;
 }
 
-.transactions-header {
+.transactions-header-welcome-timer {
     display: flex;
+}
+
+.transactions-header {
+
     color: white;
     font-size: 20px;
     width: 100%;
@@ -131,6 +135,13 @@
 
 .form-input:focus {
     outline: none;
+}
+
+.movement__row-nomov {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Стиль для кнопки */
