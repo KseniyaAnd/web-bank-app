@@ -71,6 +71,17 @@
     gap: 70px;
 }
 
+.transactions-wrapper {
+    display: flex;
+    gap: 40px;
+}
+
+.transactions-cards-operations {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
 .transactions-cards {
     width: 500px;
     display: flex;
@@ -298,6 +309,48 @@
 
 .operation--close {
     background-image: linear-gradient(to top left, #e52a5a, #ff585f);
+}
+
+.form__label--loan {
+    grid-row: 2;
+}
+/* End exceptions */
+
+.form__input {
+    width: 100%;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.4);
+    font-family: inherit;
+    font-size: 1.5rem;
+    text-align: center;
+    color: #333;
+    padding: 0.3rem 1rem;
+    border-radius: 0.7rem;
+    transition: all 0.3s;
+}
+
+.form__input:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.form__label {
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.form__btn {
+    border: none;
+    border-radius: 0.7rem;
+    font-size: 1.8rem;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.form__btn:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 

@@ -3,56 +3,100 @@
 let Users = new Map([
     ['Jonas Schmedtmann', {
         username: 'JS',
-        movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
         pin: 1111,
         cards: [
-            [5531_8796_4321_8765, '02/27', '346', 'Jonas Schmedtmann', 200],
-            [4276_1234_5678_9102, '05/27', '246', 'Jonas Schmedtmann', 500]
-        ],
-        movementsDates: [
-            '2019-11-18T21:31:17.178Z',
-            '2019-12-23T07:42:02.383Z',
-            '2020-01-28T09:15:04.904Z',
-            '2020-04-01T10:17:24.185Z',
-            '2020-05-08T14:11:59.604Z',
-            '2024-07-26T17:01:17.194Z',
-            '2024-08-22T18:49:59.371Z',
-            '2024-08-24T12:01:20.894Z',
+            {
+                cardNumber: '5531 8796 4321 8765',
+                expiryDate: '02/27',
+                cvv: '346',
+                cardHolder: 'Jonas Schmedtmann',
+                balance: 200,
+                movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+                movementsDates: [
+                    '2019-11-18T21:31:17.178Z',
+                    '2019-12-23T07:42:02.383Z',
+                    '2020-01-28T09:15:04.904Z',
+                    '2020-04-01T10:17:24.185Z',
+                    '2020-05-08T14:11:59.604Z',
+                    '2024-07-26T17:01:17.194Z',
+                    '2024-08-22T18:49:59.371Z',
+                    '2024-08-24T12:01:20.894Z',
+                ]
+            },
+            {
+                cardNumber: '4276 1234 5678 9102',
+                expiryDate: '05/27',
+                cvv: '246',
+                cardHolder: 'Jonas Schmedtmann',
+                balance: 500,
+                movements: [-200, 350, -400, 3000, -650, -130, 70, 1300],
+                movementsDates: [
+                    '2019-11-18T21:31:17.178Z',
+                    '2019-12-23T07:42:02.383Z',
+                    '2020-01-28T09:15:04.904Z',
+                    '2020-04-01T10:17:24.185Z',
+                    '2020-05-08T14:11:59.604Z',
+                    '2024-07-26T17:01:17.194Z',
+                    '2024-08-22T18:49:59.371Z',
+                    '2024-08-24T12:01:20.894Z',
+                ]
+            }
         ],
         currency: 'EUR',
         locale: 'pt-PT',
-
     }],
     ['Jessica Davis', {
         username: 'JD',
-        movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
         pin: 2222,
         cards: [
-            [5398_7643_2109_8765, '03/33', '563', 'Jessica Davis', 332]
-        ],
-        movementsDates: [
-            '2019-11-01T13:15:33.035Z',
-            '2019-11-30T09:48:16.867Z',
-            '2019-12-25T06:04:23.907Z',
-            '2020-01-25T14:18:46.235Z',
-            '2020-02-05T16:33:06.386Z',
-            '2024-04-10T14:43:26.374Z',
-            '2024-08-22T18:49:59.371Z',
-            '2024-08-24T12:01:20.894Z',
+            {
+                cardNumber: '5398 7643 2109 8765',
+                expiryDate: '03/33',
+                cvv: '563',
+                cardHolder: 'Jessica Davis',
+                balance: 332,
+                movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+                movementsDates: [
+                    '2019-11-18T21:31:17.178Z',
+                    '2019-12-23T07:42:02.383Z',
+                    '2020-01-28T09:15:04.904Z',
+                    '2020-04-01T10:17:24.185Z',
+                    '2020-05-08T14:11:59.604Z',
+                    '2024-07-26T17:01:17.194Z',
+                    '2024-08-22T18:49:59.371Z',
+                    '2024-08-24T12:01:20.894Z',
+                ]
+            }
         ],
         currency: 'USD',
         locale: 'en-US',
-
     }],
     ['Steven Thomas Williams', {
         username: 'STW',
-        movements: [200, -200, 340, -300, -20, 50, 400, -460],
         pin: 3333,
         cards: [
-            [6011_3456_7890_1234, '09/31', '212', 'Steven Thomas Williams', 621]
+            {
+                cardNumber: '6011 3456 7890 1234',
+                expiryDate: '09/31',
+                cvv: '212',
+                cardHolder: 'Steven Thomas Williams',
+                balance: 621,
+                movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+                movementsDates: [
+                    '2019-11-18T21:31:17.178Z',
+                    '2019-12-23T07:42:02.383Z',
+                    '2020-01-28T09:15:04.904Z',
+                    '2020-04-01T10:17:24.185Z',
+                    '2020-05-08T14:11:59.604Z',
+                    '2024-07-26T17:01:17.194Z',
+                    '2024-08-22T18:49:59.371Z',
+                    '2024-08-24T12:01:20.894Z',
+                ]
+            }
         ]
     }]
 ]);
+
 
 const header = document.querySelector('.header');
 const loginForm = document.querySelector('.login');
@@ -80,7 +124,16 @@ const addCardFormExpDate = document.getElementById('expiryDate');
 const transactionsSectionCardsAddBtn = document.querySelector('.card-form-button');
 const transactionsSectionCardsCarouselArrow = document.querySelectorAll('.cards-carousel-arrow');
 const transactionsMovments = document.querySelector('.transactions-movements');
+const btnOpTransfer = document.querySelector('.form__btn--transfer');
+const btnOpLoan = document.querySelector('.form__btn--loan');
+const btnOpClose = document.querySelector('.form__btn--close');
+const btnOpSort = document.querySelector('.btn--sort');
 
+const inputTransferTo = document.querySelector('.form__input--to');
+const inputTransferAmount = document.querySelector('.form__input--amount');
+const inputLoanAmount = document.querySelector('.form__input--loan-amount');
+const inputCloseUsername = document.querySelector('.form__input--user');
+const inputClosePin = document.querySelector('.form__input--pin');
 
 let currentAccount;
 
@@ -221,7 +274,6 @@ const validateCVV = (inputElement) => {
 };
 
 
-
 const addUser = (fullname, pin) => {
     if (!validateFullname(fullname) || !validatePin(pin, inputSignupPin)) {
         return; // Прекращаем выполнение, если полное имя или PIN не валидны
@@ -257,6 +309,23 @@ const findUserByUsername = (username) => {
     });
     return foundUser;
 };
+
+const findUserByCardNumber = (cardNumber) => {
+    let foundUser = null;
+
+    // Проходим по каждому пользователю в Users
+    Users.forEach((userData, username) => {
+        // Проверяем каждую карту пользователя
+        const card = userData.cards.find(card => card.cardNumber === cardNumber);
+
+        if (card) {
+            foundUser = {fullname: username, ...userData}; // Если карта найдена, возвращаем пользователя
+        }
+    });
+
+    return foundUser; // Возвращаем найденного пользователя или null, если не найдено
+};
+
 
 const findPinForUser = (user, pin) => {
     return user && user.pin === Number(pin);
@@ -405,11 +474,28 @@ transactionsSectionCardsOverlay.addEventListener("click", (e) => {
 });
 
 const addCardToCurrentAccount = (cardNumber, expiryDate, cvv, cardHolder, balance) => {
-    if (currentAccount) {
-        const newCard = [cardNumber, expiryDate, cvv, cardHolder, balance];
-        if (!currentAccount.cards) currentAccount.cards = [];  // Создаем массив карт, если его еще нет
-        currentAccount.cards.push(newCard);
-        updateUICards();
+    if (!currentAccount) return;
+
+    const newCard = {
+        cardNumber,
+        expiryDate,
+        cvv,
+        cardHolder,
+        balance: balance,
+        movements: [],
+        movementsDates: []
+    };
+
+    // Обновляем карты текущего пользователя в Map
+    const accountData = Users.get(currentAccount.fullname);
+
+    if (accountData) {
+        accountData.cards.push(newCard);
+        Users.set(currentAccount.fullname, accountData); // Сохраняем изменения
+        console.log('Card added:', newCard);
+        updateUI(currentAccount); // Обновляем интерфейс
+    } else {
+        console.error('Current account not found in Users map.');
     }
 };
 
@@ -425,9 +511,9 @@ const updateUICards = () => {
             cardElement.classList.add('card-element');
             cardElement.innerHTML = `
                 <p>Card ${i + 1}</p>
-                <p>**** **** **** ${String(card[0]).slice(-4)}</p>
-                <p>${card[1]}</p>
-                <p>${card[4]}$</p>
+                <p>**** **** **** ${String(card.cardNumber).slice(-4)}</p>
+                <p>${card.expiryDate}</p>
+                <p>${card.balance}$</p>
                 <img src="../assets/img/card-template.png" alt="Card Image">
             `;
             transactionsSectionCardsCarouselWrapper.appendChild(cardElement);
@@ -455,6 +541,7 @@ function moveSlide(direction) {
     }
 
     transactionsSectionCardsCarouselWrapper.style.transform = `translateX(-${currentSlideIndex * 128}%)`;
+    displayMovements(currentAccount);
 }
 
 addCardFormCardNumber.addEventListener('input', (event) => {
@@ -469,7 +556,7 @@ addCardFormCardNumber.addEventListener('input', (event) => {
 
 const handleAddCardFormSubmit = () => {
     if (validateNotEmpty(addCardFormCardHolder) && validateFullname(addCardFormCardHolder)) {
-        if (validateNotEmpty(addCardFormCardNumber) &&  validateCardNumber(addCardFormCardNumber)) {
+        if (validateNotEmpty(addCardFormCardNumber) && validateCardNumber(addCardFormCardNumber)) {
             if (validateNotEmpty(addCardFormCVV) && validateCVV(addCardFormCVV)) {
                 if (validateNotEmpty(addCardFormExpDate) && validateExpiryDate(addCardFormExpDate)) {
                     addCardToCurrentAccount(addCardFormCardNumber.value, addCardFormExpDate.value, addCardFormCVV.value, addCardFormCardHolder.value, 200);
@@ -534,36 +621,139 @@ const formatCur = (value, locale, curr) => {
 };
 
 
-const displayMovements = (acc, sort = false) => {
-    transactionsMovments.innerHTML = '';
+const displayMovements = (account) => {
+    transactionsMovments.innerHTML = ''; // Очищаем существующие транзакции
 
-    if (!Array.isArray(acc.movements)) {
-        transactionsMovments.innerHTML = '<p>No movements available.</p>';
-        return;
-    }
+    // Проверяем наличие карт у пользователя
+    account.cards.forEach((card, index) => {
+        if (index == currentSlideIndex) {
+            const {movements, movementsDates} = card;
+            console.log(card)
 
-    const movs = sort
-        ? acc.movements.slice().sort((a, b) => a - b)
-        : acc.movements;
+            if (movements?.length === 0) {
+                const emptyMessage = `
+                <div class="movement-row">
+                    <p>Card ${index + 1}: No transactions available</p>
+                </div>
+            `;
+                transactionsMovments.insertAdjacentHTML('beforeend', emptyMessage);
+                return;
+            }
 
-    movs.forEach((mov, i) => {
-        const type = mov > 0 ? 'deposit' : 'withdrawal';
+            // Перебираем все движения для карты
+            movements?.forEach((movement, i) => {
+                const movementDate = new Date(movementsDates[i]);
+                const formattedDate = `${String(movementDate.getDate()).padStart(2, '0')}.${String(movementDate.getMonth() + 1).padStart(2, '0')}.${movementDate.getFullYear()}`;
+                const movementType = movement > 0 ? 'deposit' : 'withdrawal';
 
-        const date = new Date(acc.movementsDates[i]);
-        const displayDate = formatMovementDate(date, acc.locale);
+                const movementRow = `
+                    <div class="movements__row">
+                        <div class="movements__type movements__type--${movementType}">
+                            ${movementType.toUpperCase()} 
+                        </div>
+                        <div class="movements__date">${formattedDate}</div>
+                        <div class="movements__amount">${movement.toFixed(2)} ${account.currency}</div>
+                    </div>
+            `;
+                transactionsMovments.insertAdjacentHTML('beforeend', movementRow);
+            });
+        }
 
-        const formattedMov = formatCur(mov, acc.locale, acc.currency);
-
-        const html = `
-      <div class="movements__row">
-        <div class="movements__type movements__type--${type}">${
-            i + 1
-        } ${type}</div>
-        <div class="movements__date">${displayDate}</div>
-        <div class="movements__value">${formattedMov}</div>
-      </div>`;
-
-        transactionsMovments.insertAdjacentHTML('afterbegin', html);
     });
 };
 
+
+btnOpTransfer.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    removeErValText(inputTransferAmount);
+    removeErValText(inputTransferTo);
+    const amount = Number(inputTransferAmount.value);
+    const receiverUser = findUserByCardNumber(inputTransferTo.value)
+    const receiverCard = findCardByUserAndNumber(receiverUser.fullname, inputTransferTo.value)
+
+    console.log(receiverUser)
+    console.log(receiverCard)
+
+    if (validateNotEmpty(inputTransferTo)) {
+        if (validateNotEmpty(inputTransferAmount)) {
+            if (receiverUser) {
+                if (validateCardNumber(inputTransferTo)) {
+                    if (amount > 0) {
+                        if (currentAccount.cards[currentSlideIndex].balance >= amount) {
+                            if (currentAccount.cards[currentSlideIndex].cardNumber != inputTransferTo.value) {
+                                currentAccount.cards[currentSlideIndex].movements.push(-amount);
+                                currentAccount.cards[currentSlideIndex].movementsDates.push(new Date().toISOString());
+                                currentAccount.cards[currentSlideIndex].balance += amount;;
+                                receiverCard.movements.push(amount);
+                                receiverCard.movementsDates.push(new Date().toISOString());
+                                receiverCard.balance += amount;
+                                inputTransferAmount.value = inputTransferTo.value = '';
+
+                                updateUICards()
+                                updateUI(currentAccount);
+                            } else {
+                                showError(inputTransferAmount, 'You can not trasfer to trasfering card.');
+                            }
+                        } else {
+                            showError(inputTransferAmount, 'No enough money.');
+                        }
+                    } else {
+                        showError(inputTransferAmount, 'Wrong amount.');
+                    }
+                }
+            } else {
+                showError(inputTransferAmount, 'This card does not exist.');
+            }
+        }
+    }
+});
+
+const findCardByUserAndNumber = (username, cardNumber) => {
+    // Ищем данные пользователя в Map
+    const user = Users.get(username);
+
+    if (!user) {
+        console.error('User not found.');
+        return null; // Пользователь не найден
+    }
+
+    // Ищем карту в массиве cards
+    const card = user.cards.find(card => card.cardNumber === cardNumber);
+
+    if (!card) {
+        console.error('Card not found for this user.');
+        return null; // Карта не найдена
+    }
+
+    return card; // Возвращаем найденную карту
+};
+
+
+btnOpClose.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    if (
+        inputCloseUsername.value === currentAccount.username &&
+        Number(inputClosePin.value) === currentAccount.pin
+    ) {
+        Users.delete(currentAccount.fullname);
+        currentAccount = undefined;
+        toggleHeader();
+        showElement(loginForm);
+        hideElement(transactionsSection)
+
+        console.log('deleted')
+    }
+
+    inputCloseUsername.value = inputClosePin.value = '';
+});
+
+inputTransferTo.addEventListener('input', (event) => {
+    let input = event.target.value.replace(/\s+/g, '');
+    if (isNaN(input)) {
+        input = input.slice(0, -1);
+    }
+
+    event.target.value = input.replace(/(\d{4})(?=\d)/g, '$1 ');
+});
