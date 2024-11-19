@@ -32,6 +32,11 @@
     align-items: center;
 }
 
+.transactions-movements {
+    width: 500px;
+    height: 615px;
+}
+
 .transactions-header {
     color: white;
     font-size: 20px;
@@ -243,37 +248,37 @@
 }
 
 .transactions-movements-wrapper {
-    background-color: #252525;
     margin-top: 40px;
+    border-radius: 20px;
+    overflow: hidden;
 }
 
 /* MOVEMENTS */
 .movements {
-    grid-row: 2 / span 3;
     background-color: #fff;
     border-radius: 1rem;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 .movements__row {
-    padding: 2.25rem 4rem;
+    font-size: 18px;
+    padding: 30px 30px;
     display: flex;
     align-items: center;
     border-bottom: 1px solid #eee;
 }
 
 .movements__type {
-    font-size: 1.1rem;
     text-transform: uppercase;
     font-weight: 500;
     color: #fff;
     padding: 0.1rem 1rem;
     border-radius: 10rem;
-    margin-right: 2rem;
+    margin-right: 1rem;
 }
 
 .movements__date {
-    font-size: 1.1rem;
+    flex: 1;
     text-transform: uppercase;
     font-weight: 500;
     color: #666;
@@ -294,26 +299,45 @@
 
 /* OPERATIONS */
 .operation {
-    border-radius: 1rem;
-    padding: 3rem 4rem;
+    border-radius: 20px;
+    padding: 20px;
     color: #333;
 }
 
 .operation--transfer {
+    font-size: 14px;
     background-image: linear-gradient(to top left, #ffb003, #ffcb03);
-}
-
-.operation--loan {
-    background-image: linear-gradient(to top left, #39b385, #9be15d);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .operation--close {
-    background-image: linear-gradient(to top left, #e52a5a, #ff585f);
+    font-size: 14px;
+    background-image: linear-gradient(to top left, #ffb003, #ffcb03);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.form__label--loan {
-    grid-row: 2;
+.form--transfer {
+    display: flex;
+    gap: 15px;
 }
+
+.form--transfer input{
+    margin: 0;
+}
+
+.form--close {
+    display: flex;
+    gap: 15px;
+}
+
+.form--close input{
+    margin: 0;
+}
+
 /* End exceptions */
 
 .form__input {
@@ -346,6 +370,7 @@
     background-color: #fff;
     cursor: pointer;
     transition: all 0.3s;
+    background-color: rgba(255, 255, 255, 0);
 }
 
 .form__btn:focus {
