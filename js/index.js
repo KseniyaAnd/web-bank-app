@@ -93,7 +93,9 @@ let Users = new Map([
                     '2024-08-24T12:01:20.894Z',
                 ]
             }
-        ]
+        ],
+        currency: 'USD',
+        locale: 'en-US',
     }]
 ]);
 
@@ -661,7 +663,7 @@ const formatCur = (value, locale, curr) => {
 const displayMovements = (account) => {
     transactionsMovements.innerHTML = ''; // Очищаем существующие транзакции
 
-    if (account?.cards.length == 0) {
+    if (account?.cards.length === 0) {
         const emptyMessage = `
                 <div class="movement__row-nomov">
                     <p>No movements available</p>
@@ -672,7 +674,7 @@ const displayMovements = (account) => {
 
 
     account?.cards.forEach((card, index) => {
-        if (index == currentSlideIndex) {
+        if (index === currentSlideIndex) {
             const {movements, movementsDates} = card;
             console.log(card)
 
@@ -731,10 +733,10 @@ btnOpTransfer.addEventListener('click', function (e) {
                 if (validateCardNumber(inputTransferTo)) {
                     if (amount > 0) {
                         if (currentAccount.cards[currentSlideIndex].balance >= amount) {
-                            if (currentAccount.cards[currentSlideIndex].cardNumber != inputTransferTo.value) {
+                            if (currentAccount.cards[currentSlideIndex].cardNumber !== inputTransferTo.value) {
                                 currentAccount.cards[currentSlideIndex].movements.push(-amount);
                                 currentAccount.cards[currentSlideIndex].movementsDates.push(new Date().toISOString());
-                                currentAccount.cards[currentSlideIndex].balance -= amount;;
+                                currentAccount.cards[currentSlideIndex].balance -= amount;
                                 receiverCard.movements.push(amount);
                                 receiverCard.movementsDates.push(new Date().toISOString());
                                 receiverCard.balance += amount;
