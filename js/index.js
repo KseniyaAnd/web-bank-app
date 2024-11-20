@@ -424,11 +424,15 @@ loginBtn.addEventListener('click', (e) => {
 
 logoutBtn.addEventListener('click', (e) => {
     e.preventDefault();
+
+    clearInterval(timer);
     currentAccount = undefined;
     toggleHeader();
     showElement(loginForm);
     hideElement(transactionsSection)
-    if (timer) clearInterval(timer);
+
+    currentSlideIndex = 0
+    moveSlide(0);
 });
 
 const displayDate = () => {
@@ -639,7 +643,7 @@ const displayMovements = (account) => {
     transactionsMovments.innerHTML = ''; // Очищаем существующие транзакции
 
     // Проверяем наличие карт у пользователя
-    account.cards.forEach((card, index) => {
+    account?.cards.forEach((card, index) => {
         if (index == currentSlideIndex) {
             const {movements, movementsDates} = card;
             console.log(card)
@@ -701,7 +705,7 @@ btnOpTransfer.addEventListener('click', function (e) {
                             if (currentAccount.cards[currentSlideIndex].cardNumber != inputTransferTo.value) {
                                 currentAccount.cards[currentSlideIndex].movements.push(-amount);
                                 currentAccount.cards[currentSlideIndex].movementsDates.push(new Date().toISOString());
-                                currentAccount.cards[currentSlideIndex].balance += amount;;
+                                currentAccount.cards[currentSlideIndex].balance -= amount;;
                                 receiverCard.movements.push(amount);
                                 receiverCard.movementsDates.push(new Date().toISOString());
                                 receiverCard.balance += amount;
