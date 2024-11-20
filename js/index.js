@@ -20,7 +20,7 @@ let Users = new Map([
                     '2020-05-08T14:11:59.604Z',
                     '2024-07-26T17:01:17.194Z',
                     '2024-08-22T18:49:59.371Z',
-                    '2024-08-24T12:01:20.894Z',
+                    '2024-11-19T12:01:20.894Z',
                 ]
             },
             {
@@ -114,7 +114,6 @@ const transactionsSection = document.querySelector('.transactions');
 const transactionsSectionHeaderWelcomeTimer = document.querySelector('.transactions-header-welcome-timer');
 const transactionsSectionHeaderDate = document.querySelector('.transactions-header-date');
 const transactionsSectionCards = document.querySelector('.transactions-cards');
-const transactionsSectionCardsCarouselContainer = document.querySelector('.cards-carousel-container');
 const transactionsSectionCardsCarouselWrapper = document.querySelector('.cards-carousel-wrapper');
 const transactionsSectionCardsOverlay = document.querySelector('.transactions .modal-overlay');
 const transactionsSectionCardsCloseBtn = document.querySelector('.card-form-close-button');
@@ -124,7 +123,7 @@ const addCardFormCVV = document.getElementById('cvv');
 const addCardFormExpDate = document.getElementById('expiryDate');
 const transactionsSectionCardsAddBtn = document.querySelector('.card-form-button');
 const transactionsSectionCardsCarouselArrow = document.querySelectorAll('.cards-carousel-arrow');
-const transactionsMovments = document.querySelector('.transactions-movements');
+const transactionsMovements = document.querySelector('.transactions-movements');
 const btnOpTransfer = document.querySelector('.form__btn--transfer');
 const btnOpClose = document.querySelector('.form__btn--close');
 
@@ -660,7 +659,7 @@ const formatCur = (value, locale, curr) => {
 
 
 const displayMovements = (account) => {
-    transactionsMovments.innerHTML = ''; // Очищаем существующие транзакции
+    transactionsMovements.innerHTML = ''; // Очищаем существующие транзакции
 
     if (account?.cards.length == 0) {
         const emptyMessage = `
@@ -668,7 +667,7 @@ const displayMovements = (account) => {
                     <p>No movements available</p>
                 </div>
             `;
-        transactionsMovments.insertAdjacentHTML('beforeend', emptyMessage);
+        transactionsMovements.insertAdjacentHTML('beforeend', emptyMessage);
     }
 
 
@@ -683,7 +682,7 @@ const displayMovements = (account) => {
                     <p>No movements available</p>
                 </div>
             `;
-                transactionsMovments.insertAdjacentHTML('beforeend', emptyMessage);
+                transactionsMovements.insertAdjacentHTML('beforeend', emptyMessage);
                 return;
             }
 
@@ -693,7 +692,8 @@ const displayMovements = (account) => {
                 .reverse()
                 .forEach((movement, i) => {
                 const movementDate = new Date(movementsDates[movements.length - 1 - i]);
-                const formattedDate = `${String(movementDate.getDate()).padStart(2, '0')}.${String(movementDate.getMonth() + 1).padStart(2, '0')}.${movementDate.getFullYear()}`;
+                const formattedDate = formatMovementDate(movementDate, currentAccount.locale);
+                const formattedMov = formatCur(movement, currentAccount.locale, currentAccount.currency);
                 const movementType = movement > 0 ? 'deposit' : 'withdrawal';
 
                 const movementRow = `
@@ -702,10 +702,10 @@ const displayMovements = (account) => {
                             ${movementType.toUpperCase()} 
                         </div>
                         <div class="movements__date">${formattedDate}</div>
-                        <div class="movements__amount">${movement.toFixed(2)} ${account.currency}</div>
+                        <div class="movements__amount">${formattedMov}</div>
                     </div>
             `;
-                transactionsMovments.insertAdjacentHTML('beforeend', movementRow);
+                transactionsMovements.insertAdjacentHTML('beforeend', movementRow);
             });
         }
 
