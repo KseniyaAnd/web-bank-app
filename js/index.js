@@ -195,8 +195,11 @@ const validatePin = (inputElement) => {
 
 const validateFullname = (inputElement) => {
     removeErValText(inputElement);
-    const fullname = inputElement.value.trim();
-    const words = fullname.split(/\s+/);
+    console.log("inputElement ", inputElement)
+    const fullname = inputElement.value;
+    console.log("fullname ", fullname);
+    console.log("fullname.trim().split(/\\s+/) ", fullname.trim().split(/\s+/));
+    const words = fullname.trim().split(/\s+/);
     if (words.length < 2) {
         showError(inputElement, 'Полное имя должно содержать больше двух слов.');
         return false;
@@ -274,31 +277,46 @@ const validateCVV = (inputElement) => {
     return true;
 };
 
-
 const addUser = (fullname, pin) => {
-    if (!validateFullname(fullname) || !validatePin(pin, inputSignupPin)) {
-        return; // Прекращаем выполнение, если полное имя или PIN не валидны
+    // Проверяем корректность входных данных
+    if (!fullname || !pin) {
+        console.error('Fullname and PIN are required.');
+        return;
     }
 
+    // Создаем уникальное имя пользователя
     const username = createUsername(fullname);
+
+    // Создаем объект нового пользователя
     const newUser = {
-        fullname: fullname, // Добавляем full name
+        fullname: fullname.trim(), // Убираем пробелы по краям
         username: username,
         movements: [],
         pin: Number(pin),
-        cards: []  // Добавляем пустой массив карт
+        cards: [], // Пустой массив для карт
+        currency: 'USD', // Значение по умолчанию, можно сделать настраиваемым
+        locale: navigator.language, // Устанавливаем локаль текущей системы
     };
 
+    // Проверяем, существует ли уже аккаунт с таким полным именем
     if (!Users.has(fullname)) {
+        // Добавляем пользователя в коллекцию
         Users.set(fullname, newUser);
-        console.log(`Account for ${fullname} has been added.`);
+
+        console.log(`Account for ${fullname} has been successfully added.`);
+
+        // Очищаем поля ввода
         clearInput(inputSignupFullname);
         clearInput(inputSignupPin);
+
+        // Устанавливаем текущего пользователя
         currentAccount = newUser;
     } else {
+        // Выводим сообщение об ошибке, если пользователь уже существует
         showError(inputSignupFullname, `Account for ${fullname} already exists.`);
     }
 };
+
 
 
 const findUserByUsername = (username) => {
@@ -334,7 +352,7 @@ const findPinForUser = (user, pin) => {
 
 const createUsername = (fullname) => {
     return fullname
-        .toLowerCase()
+        .toUpperCase()
         .split(' ')
         .map(name => name[0])
         .join('');
@@ -462,11 +480,13 @@ const displayWelcomeMessage = () => {
 const updateUI = () => {
     if (currentAccount) {
         updateUICards();
-        displayMovements(currentAccount);
+
 
         showElement(transactionsSection);
         displayWelcomeMessage();
         displayDate();
+
+        displayMovements(currentAccount);
     }
 };
 
@@ -535,7 +555,7 @@ const updateUICards = () => {
         });
     } else {
         hideElement(transactionsSectionCardsCarouselArrow);
-        transactionsSectionCardsCarouselWrapper.innerHTML = '<p>No cards available</p>';
+        transactionsSectionCardsCarouselWrapper.innerHTML = '<p style="height: 150px; width: 100%; text-align: center;">No cards available</p>';
     }
 
     createAddCardButton();
@@ -642,7 +662,16 @@ const formatCur = (value, locale, curr) => {
 const displayMovements = (account) => {
     transactionsMovments.innerHTML = ''; // Очищаем существующие транзакции
 
-    // Проверяем наличие карт у пользователя
+    if (account?.cards.length == 0) {
+        const emptyMessage = `
+                <div class="movement__row-nomov">
+                    <p>No movements available</p>
+                </div>
+            `;
+        transactionsMovments.insertAdjacentHTML('beforeend', emptyMessage);
+    }
+
+
     account?.cards.forEach((card, index) => {
         if (index == currentSlideIndex) {
             const {movements, movementsDates} = card;
