@@ -1,0 +1,116 @@
+/*
+#e4311d - coral
+#332C2B - backgroun
+#e8e8e8 - fonts
+ */
+
+/* ============================== */
+/* Basic styles */
+/* ============================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: 0.5s;
+    color: #e8e8e8;
+}
+
+html, body {
+    margin: 10px 100px;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: #e8e8e8;
+    height: 100%;
+    font-family: "Microsoft JhengHei UI Light", sans-serif;
+    background-color: #332C2B;
+    overflow-y: hidden;
+}
+
+button {
+    font-weight: lighter;
+    color: #e8e8e8;
+    background-color: #F43823;
+    border: none;
+    cursor: pointer;
+    border-radius: 30px;
+    padding: 10px 15px;
+    font-size: 20px;
+}
+
+button:hover {
+    transform: scale(1.04);
+}
+
+input {
+    border: none;
+    color: #4B3E3C;
+    background-color: #e8e8e8;
+    border-radius: 30px;
+    padding: 10px 15px;
+    font-size: 16px;
+}
+
+input:focus {
+    outline: none;
+}
+
+/* ============================== */
+/* Error styles */
+/* ============================== */
+
+.input-error {
+    background-color: #f8d7da;
+}
+
+.input-error-text {
+    font-size: 16px;
+    color: #f8d7da;
+}
+
+/* ============================== */
+/* Transitions styles */
+/* ============================== */
+
+.opacity-zero {
+    opacity: 0;
+}
+
+.opacity-one {
+    opacity: 1;
+}
+
+.z-index-plus {
+    z-index: 1;
+}
+
+.z-index-min {
+    z-index: -1;
+}
+
+@media (max-width: 1400px) {
+    html, body {
+        margin: 10px 50px;
+    }
+}
+
+@media (max-width: 1200px) {
+    html, body {
+        margin: 10px 20px;
+    }
+}
+
+@media (max-width: 1050px) {
+    html, body {
+        overflow-y: unset;
+    }
+}
+
+
+@media (max-width: 1050px) {
+    html, body {
+        font-size: 16px;
+    }
+}

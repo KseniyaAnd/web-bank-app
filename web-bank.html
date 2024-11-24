@@ -3,171 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <title>BankWebApp | App</title>
+    <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/auth.css">
-    <link rel="stylesheet" href="css/transactions.css">
+    <link rel="stylesheet" href="css/authorization.css">
+    <link rel="stylesheet" href="css/transactions-header.css">
+    <link rel="stylesheet" href="css/transactions-main-add-card.css">
+    <link rel="stylesheet" href="css/transactions-main.css">
+    <link rel="stylesheet" href="css/transactions-main-movements.css">
+    <link rel="stylesheet" href="css/transactions-main-cards.css">
+    <link rel="stylesheet" href="css/transactions-main-operation.css">
 </head>
+
 <body>
 <header class="header opacity-zero">
-    <div class="logo">
-        <a href="page-bank.html">
-            <img alt="bank-logo" src="assets/img/bank-logo.png"/>
-            <p>Web Bank</p>
-        </a>
+    <div class="header__logo">
+        <img alt="header__bank-logo" src="assets/img/bank-logo.png"/>
+        <p>Web Bank</p>
     </div>
 
-    <div class="button logout-btn">
-        <button>
-            Log Out
-        </button>
-        <img src="assets/img/log-out-arrow.png">
-    </div>
+    <button class="header__logout-button">
+        <p class="header__logout-button-label">Log Out</p>
+        <img class="header__logout-button-img" src="assets/img/log-out-arrow.png" >
+    </button>
 </header>
 
 <main class="main">
-    <form class="auth-form login opacity-zero">
-        <p>Log in</p>
-        <input
-                type="text"
-                placeholder="user"
-                class="login__input--user"
-        />
-        <input
-                type="password"
-                placeholder="PIN"
-                maxlength="4"
-                class="login__input--pin"
-        />
-        <button class="login-btn">Continue</button>
-        <p class="auth-link signup-link">Sign up.</p>
-    </form>
+    <div class="authorization">
+        <form class="authorization__form authorization__form-login opacity-zero">
+            <p>Log in</p>
+            <input
+                    type="text"
+                    placeholder="user"
+                    class="authorization__form-login-input--user"
+            />
+            <input
+                    type="password"
+                    placeholder="PIN"
+                    maxlength="4"
+                    class="authorization__form-login-input--pin"
+            />
+            <button class="authorization__form-button authorization__form-login-button">Continue</button>
+            <p class="authorization__form-toggle authorization__form-toggle-to-signup">Sign up.</p>
+        </form>
 
-    <form class="auth-form signup opacity-zero">
-        <p>Sign up</p>
-        <input
-                type="text"
-                placeholder="Full Name"
-                class="signup__input--fullname"
-        />
-        <input
-                type="password"
-                placeholder="PIN"
-                maxlength="4"
-                class="signup__input--pin"
-        />
-        <button class="signup-btn">Continue</button>
-        <p class="auth-link login-link">Log in.</p>
-    </form>
+        <form class="authorization__form authorization__form-signup opacity-zero">
+            <p>Sign up</p>
+            <input
+                    type="text"
+                    placeholder="Full Name"
+                    class="authorization__form-signup-input--fullname"
+            />
+            <input
+                    type="password"
+                    placeholder="PIN"
+                    maxlength="4"
+                    class="authorization__form-signup-input--pin"
+            />
+            <button class="authorization__form-button authorization__form-signup-button">Continue</button>
+            <p class="authorization__form-toggle authorization__form-toggle-to-login">Log in.</p>
+        </form>
+    </div>
 
-    <section class="transactions opacity-zero z-index-min">
-        <div id="modalOverlay" class="modal-overlay opacity-zero z-index-min">
-            <div class="card-form-modal-container">
-                <div class="card-form-img">
-                    <img src="assets/img/card-template.png">
-                </div>
-                <div>
-                    <form id="cardForm" class="card-form-container">
-                        <label for="cardHolder" class="card-form-label">Cardholber</label>
-                        <input type="text" id="cardHolder" class="form-input" placeholder="Cardholber"
-                               required>
-
-                        <label for="cardNumber" class="card-form-label">Card Number</label>
-                        <input type="text" id="cardNumber" class="form-input" maxlength="19"
-                               placeholder="Card Number" required>
-
-                        <span>
-                                <div>
-                                    <label for="cvv" class="card-form-label">CVV</label>
-                            <input type="text" id="cvv" class="form-input" maxlength="3" placeholder="CVV"
-                                   required>
-                                </div>
-
-                                <div>
-                                     <label for="expiryDate" class="card-form-label">Exp Date</label>
-                            <input type="text" id="expiryDate" class="form-input" maxlength="5" placeholder="MM/YY"
-                                   required>
-                                </div>
-                            </span>
-
-                        <button class="card-form-button">Add card</button>
-                    </form>
-                </div>
-                <button class="card-form-close-button">✖</button>
-            </div>
-        </div>
+    <div class="transactions opacity-zero z-index-min">
         <div class="transactions-header">
-            <div class="transactions-header-welcome-timer">
-
+            <div class="transactions-header__welcome-timer">
             </div>
-            <div class="transactions-header-date">
-
+            <div class="transactions-header__date">
             </div>
         </div>
-        <div class="transactions-wrapper">
 
-
-            <!-- MOVEMENTS -->
-            <div class="transactions-movements-wrapper">
-                <div class="transactions-movements movements">
-                    <div class="movements__row">
-                        <div class="movements__type movements__type--deposit">2 deposit</div>
-                        <div class="movements__date">3 days ago</div>
-                        <div class="movements__value">4 000€</div>
-                    </div>
-                    <div class="movements__row">
-                        <div class="movements__type movements__type--withdrawal">
-                            1 withdrawal
-                        </div>
-                        <div class="movements__date">24/01/2037</div>
-                        <div class="movements__value">-378€</div>
-                    </div>
-                </div>
+        <div class="transactions-main">
+            <div class="transactions-main__movements">
             </div>
 
-            <div class="transactions-cards-operations">
-                <div class="transactions-cards">
-                    <div class="cards-carousel-container">
-                        <div class="cards-carousel-wrapper" style="transform: translateX(0%);">
+            <div class="transactions-main__container">
+                <div class="transactions-main__cards">
+                    <div class="transactions-main__cards-carousel">
+                        <div class="transactions-main__cards-carousel-container">
                         </div>
-                        <button class="cards-carousel-arrow left opacity-zero z-index-min" onclick="moveSlide(-1)">
+                        <button class="transactions-main__cards-carousel-arrow
+                                       transactions-main__cards-carousel-arrow-left
+                                       opacity-zero
+                                       z-index-min">
                             &#10094;
                         </button>
-                        <button class="cards-carousel-arrow right opacity-zero z-index-min" onclick="moveSlide(1)">
+                        <button class="transactions-main__cards-carousel-arrow
+                                       transactions-main__cards-carousel-arrow-right
+                                       opacity-zero
+                                       z-index-min">
                             &#10095;
                         </button>
                     </div>
-
                 </div>
 
-                <!-- OPERATION: TRANSFERS -->
-                <div class="operation operation--transfer">
-                    <h2>Transfer money</h2>
-                    <form class="form form--transfer">
-                        <input type="text" class="form-input form__input--to" placeholder="Transfer to"/>
-                        <input type="number" class="form-input form__input--amount" placeholder="Amount"/>
-                        <button class="form__btn form__btn--transfer">&rarr;</button>
+                <div class="transactions-main__add-card transactions_main__add-card-modal-overlay opacity-zero z-index-min">
+                    <div class="transactions-main__add-card-container">
+                        <img class="transactions-main__add-card-img" src="assets/img/card-template.png">
+                        <div>
+                            <form class="transactions-main__add-card-form-container">
+                                <label for="cardHolder"
+                                       class="transactions-main__add-card-form-input-label">Cardholder</label>
+                                <input type="text" id="cardHolder" class="transactions-main__add-card-form-input "
+                                       placeholder="Cardholder"
+                                       required>
+
+                                <label for="cardNumber" class="transactions-main__add-card-form-input-label">Card
+                                    Number</label>
+                                <input type="text" id="cardNumber" class="transactions-main__add-card-form-input"
+                                       maxlength="19"
+                                       placeholder="Card Number" required>
+
+                                <div class="transactions-add-card-form__inputs-container">
+                                    <div>
+                                        <label for="cvv" class="transactions-main__add-card-form-input-label">CVV</label>
+                                        <input type="text" id="cvv" class="transactions-main__add-card-form-input"
+                                               maxlength="3" placeholder="CVV"
+                                               required>
+                                    </div>
+
+                                    <div>
+                                        <label for="expiryDate" class="transactions-main__add-card-form-input-label">Exp
+                                            Date</label>
+                                        <input type="text" id="expiryDate" class="transactions-main__add-card-form-input"
+                                               maxlength="5"
+                                               placeholder="MM/YY"
+                                               required>
+                                    </div>
+
+                                </div>
+
+                                <button class="transactions-main__add-card-form-add-card-button">Add card</button>
+                            </form>
+                        </div>
+                        <button class="transactions-main__add-card-form-close-button">✖</button>
+                    </div>
+                </div>
+
+                <div class="transactions-main__operation">
+                    <p>Transfer money</p>
+                    <form class="transactions-main__operation-form">
+                        <input type="text" class="transactions-main__operation-form-input transactions-main__operation-form-input--to" placeholder="Transfer to"/>
+                        <input type="number" class="transactions-main__operation-form-input transactions-main__operation-form-input--amount" placeholder="Amount"/>
+                        <button class="transactions-main__operation-form-button transactions-main__operation-form-button--transfer">&rarr;</button>
                     </form>
                 </div>
 
-                <!-- OPERATION: CLOSE -->
-                <div class="operation operation--close">
-                    <h2>Close account</h2>
-                    <form class="form form--close">
-                        <input type="text" class="form-input form__input--user" placeholder="Confirm user"/>
+                <div class="transactions-main__operation">
+                    <p>Close account</p>
+                    <form class="transactions-main__operation-form">
+                        <input type="text" class="transactions-main__operation-form-input transactions-main__operation-form-input--user" placeholder="Confirm user"/>
                         <input
                                 type="password"
                                 maxlength="6"
-                                class="form-input form__input--pin"
+                                class="transactions-main__operation-form-input transactions-main__operation-form-input--pin"
                                 placeholder="Confirm PIN"
                         />
-                        <button class="form__btn form__btn--close">&rarr;</button>
+                        <button class="transactions-main__operation-form-button transactions-main__operation-form-button--close">&rarr;</button>
                     </form>
                 </div>
             </div>
         </div>
-
-
-    </section>
+    </div>
 </main>
 <script src="js/index.js"></script>
 </body>

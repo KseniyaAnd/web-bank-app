@@ -1,0 +1,31 @@
+.transactions-main__operation {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.transactions-main__operation-form {
+    display: flex;
+    gap: 15px;
+}
+
+.transactions-main__operation-form-input {
+    margin: 0;
+}
+
+.transactions-main__operation-form-input:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.transactions-main__operation-form-button {
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.transactions-main__operation-form-button:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.8);
+}

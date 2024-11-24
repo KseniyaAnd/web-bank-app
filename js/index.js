@@ -101,54 +101,74 @@ let Users = new Map([
 
 
 const header = document.querySelector('.header');
-const loginForm = document.querySelector('.login');
-const signupForm = document.querySelector('.signup');
-const loginLink = document.querySelector('.login-link');
-const signupLink = document.querySelector('.signup-link');
-const inputLoginUsername = document.querySelector('.login__input--user');
-const inputLoginPin = document.querySelector('.login__input--pin');
-const inputSignupFullname = document.querySelector('.signup__input--fullname');
-const inputSignupPin = document.querySelector('.signup__input--pin');
-const signupBtn = document.querySelector(".signup-btn");
-const loginBtn = document.querySelector(".login-btn");
-const logoutBtn = document.querySelector(".logout-btn");
-const transactionsSection = document.querySelector('.transactions');
-const transactionsSectionHeaderWelcomeTimer = document.querySelector('.transactions-header-welcome-timer');
-const transactionsSectionHeaderDate = document.querySelector('.transactions-header-date');
-const transactionsSectionCards = document.querySelector('.transactions-cards');
-const transactionsSectionCardsCarouselWrapper = document.querySelector('.cards-carousel-wrapper');
-const transactionsSectionCardsOverlay = document.querySelector('.transactions .modal-overlay');
-const transactionsSectionCardsCloseBtn = document.querySelector('.card-form-close-button');
-const addCardFormCardHolder = document.getElementById('cardHolder');
-const addCardFormCardNumber = document.getElementById('cardNumber');
-const addCardFormCVV = document.getElementById('cvv');
-const addCardFormExpDate = document.getElementById('expiryDate');
-const transactionsSectionCardsAddBtn = document.querySelector('.card-form-button');
-const transactionsSectionCardsCarouselArrow = document.querySelectorAll('.cards-carousel-arrow');
-const transactionsMovements = document.querySelector('.transactions-movements');
-const btnOpTransfer = document.querySelector('.form__btn--transfer');
-const btnOpClose = document.querySelector('.form__btn--close');
+const headerLogoutButton = document.querySelector(".header__logout-button");
 
-const inputTransferTo = document.querySelector('.form__input--to');
-const inputTransferAmount = document.querySelector('.form__input--amount');
-const inputCloseUsername = document.querySelector('.form__input--user');
-const inputClosePin = document.querySelector('.form__input--pin');
+// Login Form
+const authorizationFormLogin = document.querySelector('.authorization__form-login');
+const authorizationFormLoginInputUser = document.querySelector('.authorization__form-login-input--user');
+const authorizationFormLoginInputPin = document.querySelector('.authorization__form-login-input--pin');
+const authorizationFormLoginButton = document.querySelector(".authorization__form-login-button");
+const toggleToSignup = document.querySelector('.authorization__form-toggle-to-signup');
+
+// SignUp Form
+const authorizationFormSignup = document.querySelector('.authorization__form-signup');
+const authorizationFormSignupInputFullname = document.querySelector('.authorization__form-signup-input--fullname');
+const authorizationFormSignupInputPin = document.querySelector('.authorization__form-signup-input--pin');
+const authorizationFormSignupButton = document.querySelector(".authorization__form-signup-button");
+const toggleToLogin = document.querySelector('.authorization__form-toggle-to-login');
+
+// Transactions Header
+const transactionsSectionHeaderWelcomeTimer = document.querySelector('.transactions-header__welcome-timer');
+const transactionsSectionHeaderDate = document.querySelector('.transactions-header__date');
+
+// Transactions
+const transactions = document.querySelector('.transactions');
+
+// Transactions: Movements
+const transactionsMainMovements = document.querySelector('.transactions-main__movements');
+
+// Transactions: Cards
+const transactionsMainCards = document.querySelector('.transactions-main__cards');
+const transactionsMainCardsCarouselContainer = document.querySelector('.transactions-main__cards-carousel-container');
+const transactionsMainCardsCarouselArrows = document.querySelectorAll('.transactions-main__cards-carousel-arrow');
+const transactionsMainCardsCarouselArrowLeft = document.querySelector('.transactions-main__cards-carousel-arrow-left');
+const transactionsMainCardsCarouselArrowRight = document.querySelector('.transactions-main__cards-carousel-arrow-right');
+
+// Transactions: Add Card Form
+const transactionsMainAddCardModalOverlay = document.querySelector('.transactions_main__add-card-modal-overlay');
+const transactionsMainAddCardFormInputCardHolder = document.getElementById('cardHolder');
+const transactionsMainAddCardFormInputCardNumber = document.getElementById('cardNumber');
+const transactionsMainAddCardFormInputCVV = document.getElementById('cvv');
+const transactionsMainAddCardFormInputExpiryDate = document.getElementById('expiryDate');
+const transactionsMainAddCardFormAddCardButton = document.querySelector('.transactions-main__add-card-form-add-card-button');
+const transactionsMainAddCardFormCloseButton = document.querySelector('.transactions-main__add-card-form-close-button');
+
+// Transactions: Transfer to
+const transactionsMainOperationFormInputTo = document.querySelector('.transactions-main__operation-form-input--to');
+const transactionsMainOperationFormInputAmount = document.querySelector('.transactions-main__operation-form-input--amount');
+const transactionsMainOperationFormButtonTransfer = document.querySelector('.transactions-main__operation-form-button--transfer');
+
+// Transactions: Close account
+const transactionsMainOperationFormInputUser = document.querySelector('.transactions-main__operation-form-input--user');
+const transactionsMainOperationFormInputPin = document.querySelector('.transactions-main__operation-form-input--pin');
+const transactionsMainOperationFormButtonClose = document.querySelector('.transactions-main__operation-form-button--close');
+
 
 let labelTimer = document.querySelector('.timer');
-
-
 let currentAccount, timer;
 
-const clearInput = (input) => {
-    input.value = '';
+const clearInputs = (...inputs) => {
+    inputs.forEach(input => input.value = '');
 };
 
 const toggleFormsVisibility = (activeForm, inactiveForm, usernameInput, pinInput) => {
     hideElement(inactiveForm);
     showElement(activeForm);
 
-    clearInput(usernameInput);
-    clearInput(pinInput);
+    clearInputs(
+        usernameInput,
+        pinInput
+    );
 };
 
 const showElement = (el) => {
@@ -196,10 +216,7 @@ const validatePin = (inputElement) => {
 
 const validateFullname = (inputElement) => {
     removeErValText(inputElement);
-    console.log("inputElement ", inputElement)
     const fullname = inputElement.value;
-    console.log("fullname ", fullname);
-    console.log("fullname.trim().split(/\\s+/) ", fullname.trim().split(/\s+/));
     const words = fullname.trim().split(/\s+/);
     if (words.length < 2) {
         showError(inputElement, 'Полное имя должно содержать больше двух слов.');
@@ -237,7 +254,7 @@ const validateNotEmpty = (inputElement) => {
 
 const validateCardNumber = (inputElement) => {
     removeErValText(inputElement);
-    const cardNumber = inputElement.value.replace(/\s/g, ''); // Удаляем пробелы
+    const cardNumber = inputElement.value.replace(/\s/g, '');
     const regex = /^\d{16}$/;
     if (!regex.test(cardNumber)) {
         showError(inputElement, 'Номер карты должен состоять из 16 цифр.');
@@ -279,46 +296,35 @@ const validateCVV = (inputElement) => {
 };
 
 const addUser = (fullname, pin) => {
-    // Проверяем корректность входных данных
     if (!fullname || !pin) {
-        console.error('Fullname and PIN are required.');
         return;
     }
 
-    // Создаем уникальное имя пользователя
     const username = createUsername(fullname);
 
-    // Создаем объект нового пользователя
     const newUser = {
-        fullname: fullname.trim(), // Убираем пробелы по краям
+        fullname: fullname.trim(),
         username: username,
         movements: [],
         pin: Number(pin),
-        cards: [], // Пустой массив для карт
-        currency: 'USD', // Значение по умолчанию, можно сделать настраиваемым
-        locale: navigator.language, // Устанавливаем локаль текущей системы
+        cards: [],
+        currency: 'USD',
+        locale: navigator.language,
     };
 
-    // Проверяем, существует ли уже аккаунт с таким полным именем
     if (!Users.has(fullname)) {
-        // Добавляем пользователя в коллекцию
         Users.set(fullname, newUser);
 
-        console.log(`Account for ${fullname} has been successfully added.`);
+        clearInputs(
+            authorizationFormSignupInputFullname,
+            authorizationFormSignupInputPin
+        );
 
-        // Очищаем поля ввода
-        clearInput(inputSignupFullname);
-        clearInput(inputSignupPin);
-
-        // Устанавливаем текущего пользователя
         currentAccount = newUser;
     } else {
-        // Выводим сообщение об ошибке, если пользователь уже существует
-        showError(inputSignupFullname, `Account for ${fullname} already exists.`);
+        showError(authorizationFormSignupInputFullname, `Account for ${fullname} already exists.`);
     }
 };
-
-
 
 const findUserByUsername = (username) => {
     let foundUser = null;
@@ -333,19 +339,16 @@ const findUserByUsername = (username) => {
 const findUserByCardNumber = (cardNumber) => {
     let foundUser = null;
 
-    // Проходим по каждому пользователю в Users
     Users.forEach((userData, username) => {
-        // Проверяем каждую карту пользователя
         const card = userData.cards.find(card => card.cardNumber === cardNumber);
 
         if (card) {
-            foundUser = {fullname: username, ...userData}; // Если карта найдена, возвращаем пользователя
+            foundUser = {fullname: username, ...userData};
         }
     });
 
-    return foundUser; // Возвращаем найденного пользователя или null, если не найдено
+    return foundUser;
 };
-
 
 const findPinForUser = (user, pin) => {
     return user && user.pin === Number(pin);
@@ -382,27 +385,27 @@ const showError = (input, message) => {
 };
 
 toggleHeader();
-toggleFormsVisibility(loginForm, signupForm, inputLoginUsername, inputLoginPin);
+toggleFormsVisibility(authorizationFormLogin, authorizationFormSignup, authorizationFormLoginInputUser, authorizationFormLoginInputPin);
 
-loginLink.addEventListener('click', () => {
-    toggleFormsVisibility(loginForm, signupForm, inputLoginUsername, inputLoginPin);
+toggleToLogin.addEventListener('click', () => {
+    toggleFormsVisibility(authorizationFormLogin, authorizationFormSignup, authorizationFormLoginInputUser, authorizationFormLoginInputPin);
 });
 
-signupLink.addEventListener('click', () => {
-    toggleFormsVisibility(signupForm, loginForm, inputSignupFullname, inputSignupPin);
+toggleToSignup.addEventListener('click', () => {
+   toggleFormsVisibility(authorizationFormSignup, authorizationFormLogin, authorizationFormSignupInputFullname, authorizationFormSignupInputPin);
 });
 
-signupBtn.addEventListener('click', (e) => {
+authorizationFormSignupButton.addEventListener('click', (e) => {
     e.preventDefault();
 
-    if (validateNotEmpty(inputSignupFullname)) {
-        if (validateFullname(inputSignupFullname) && validateNotEmpty(inputSignupPin)) {
-            if (validatePin(inputSignupPin)) {
-                addUser(inputSignupFullname.value, inputSignupPin.value);
+    if (validateNotEmpty(authorizationFormSignupInputFullname)) {
+        if (validateFullname(authorizationFormSignupInputFullname) && validateNotEmpty(authorizationFormSignupInputPin)) {
+            if (validatePin(authorizationFormSignupInputPin)) {
+                addUser(authorizationFormSignupInputFullname.value, authorizationFormSignupInputPin.value);
 
                 updateUI();
-                hideElement(signupForm);
-                showElement(transactionsSection);
+                hideElement(authorizationFormSignup);
+                showElement(transactions);
                 toggleHeader();
 
                 if (timer) clearInterval(timer);
@@ -412,43 +415,44 @@ signupBtn.addEventListener('click', (e) => {
     }
 });
 
-loginBtn.addEventListener('click', (e) => {
+authorizationFormLoginButton.addEventListener('click', (e) => {
     e.preventDefault();
-    removeErValText(inputLoginPin);
-    removeErValText(inputLoginUsername);
-    const user = findUserByUsername(inputLoginUsername.value);
+    removeErValText(authorizationFormLoginInputPin);
+    removeErValText(authorizationFormLoginInputUser);
+    const user = findUserByUsername(authorizationFormLoginInputUser.value);
 
-    if (validateNotEmpty(inputLoginUsername)) {
-        if (validateUsername(inputLoginUsername) && validateNotEmpty(inputLoginPin)) {
-            if (validatePin(inputLoginPin)) {
-                if (user && findPinForUser(user, inputLoginPin.value)) {
+    if (validateNotEmpty(authorizationFormLoginInputUser)) {
+        if (validateUsername(authorizationFormLoginInputUser) && validateNotEmpty(authorizationFormLoginInputPin)) {
+            if (validatePin(authorizationFormLoginInputPin)) {
+                if (user && findPinForUser(user, authorizationFormLoginInputPin.value)) {
                     currentAccount = user;
-                    clearInput(inputLoginUsername);
-                    clearInput(inputLoginPin);
-                    hideElement(loginForm);
+                    clearInputs(
+                        authorizationFormLoginInputUser, authorizationFormLoginInputPin
+                    );
+                    hideElement(authorizationFormLogin);
                     toggleHeader();
-                    showElement(transactionsSection);
+                    showElement(transactions);
                     updateUI();
 
                     if (timer) clearInterval(timer);
                     timer = startLogOutTimer();
 
                 } else {
-                    showError(inputLoginUsername, 'Wrong username or PIN.');
+                    showError(authorizationFormLoginInputUser, 'Wrong username or PIN.');
                 }
             }
         }
     }
 });
 
-logoutBtn.addEventListener('click', (e) => {
+headerLogoutButton.addEventListener('click', (e) => {
     e.preventDefault();
 
     clearInterval(timer);
     currentAccount = undefined;
     toggleHeader();
-    showElement(loginForm);
-    hideElement(transactionsSection)
+    showElement(authorizationFormLogin);
+    hideElement(transactions)
 
     currentSlideIndex = 0
     moveSlide(0);
@@ -457,7 +461,7 @@ logoutBtn.addEventListener('click', (e) => {
 const displayDate = () => {
     const currentDate = new Date();
     const day = String(currentDate.getDate()).padStart(2, '0');
-    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
     const year = currentDate.getFullYear();
 
     const dateText = `Date: ${day}.${month}.${year}`;
@@ -483,7 +487,7 @@ const updateUI = () => {
         updateUICards();
 
 
-        showElement(transactionsSection);
+        showElement(transactions);
         displayWelcomeMessage();
         displayDate();
 
@@ -491,21 +495,25 @@ const updateUI = () => {
     }
 };
 
-transactionsSectionCardsCloseBtn.addEventListener("click", () => {
-    hideElement(transactionsSectionCardsOverlay)
-    clearInput(addCardFormExpDate)
-    clearInput(addCardFormCardNumber)
-    clearInput(addCardFormCVV)
-    clearInput(addCardFormCardHolder)
+transactionsMainAddCardFormCloseButton.addEventListener("click", () => {
+    hideElement(transactionsMainAddCardModalOverlay)
+    clearInputs(
+        transactionsMainAddCardFormInputExpiryDate,
+        transactionsMainAddCardFormInputCardNumber,
+        transactionsMainAddCardFormInputCVV,
+        transactionsMainAddCardFormInputCardHolder
+    )
 });
 
-transactionsSectionCardsOverlay.addEventListener("click", (e) => {
-    if (e.target === transactionsSectionCardsOverlay) {
-        hideElement(transactionsSectionCardsOverlay);
-        clearInput(addCardFormExpDate);
-        clearInput(addCardFormCardNumber);
-        clearInput(addCardFormCVV);
-        clearInput(addCardFormCardHolder);
+transactionsMainAddCardModalOverlay.addEventListener("click", (e) => {
+    if (e.target === transactionsMainAddCardModalOverlay) {
+        hideElement(transactionsMainAddCardModalOverlay);
+        clearInputs(
+            transactionsMainAddCardFormInputExpiryDate,
+            transactionsMainAddCardFormInputCardNumber,
+            transactionsMainAddCardFormInputCVV,
+            transactionsMainAddCardFormInputCardHolder
+        )
     }
 });
 
@@ -522,29 +530,25 @@ const addCardToCurrentAccount = (cardNumber, expiryDate, cvv, cardHolder, balanc
         movementsDates: []
     };
 
-    // Обновляем карты текущего пользователя в Map
     const accountData = Users.get(currentAccount.fullname);
 
     if (accountData) {
         accountData.cards.push(newCard);
-        Users.set(currentAccount.fullname, accountData); // Сохраняем изменения
-        console.log('Card added:', newCard);
-        updateUI(currentAccount); // Обновляем интерфейс
-    } else {
-        console.error('Current account not found in Users map.');
+        Users.set(currentAccount.fullname, accountData);
+        updateUI(currentAccount);
     }
 };
 
 
 const updateUICards = () => {
-    transactionsSectionCardsCarouselWrapper.innerHTML = '';  // Очищаем существующие карточные элементы
+    transactionsMainCardsCarouselContainer.innerHTML = '';
 
     if (currentAccount && currentAccount.cards?.length > 0) {
-        showElement(transactionsSectionCardsCarouselArrow);
+        showElement(transactionsMainCardsCarouselArrows);
 
         currentAccount.cards.forEach((card, i) => {
             const cardElement = document.createElement('div');
-            cardElement.classList.add('card-element');
+            cardElement.classList.add('transactions-main__cards-carousel-card-element');
             cardElement.innerHTML = `
                 <p>Card ${i + 1}</p>
                 <p>**** **** **** ${String(card.cardNumber).slice(-4)}</p>
@@ -552,11 +556,11 @@ const updateUICards = () => {
                 <p>${card.balance}$</p>
                 <img src="../assets/img/card-template.png" alt="Card Image">
             `;
-            transactionsSectionCardsCarouselWrapper.appendChild(cardElement);
+            transactionsMainCardsCarouselContainer.appendChild(cardElement);
         });
     } else {
-        hideElement(transactionsSectionCardsCarouselArrow);
-        transactionsSectionCardsCarouselWrapper.innerHTML = '<p style="height: 150px; width: 100%; text-align: center;">No cards available</p>';
+        hideElement(transactionsMainCardsCarouselArrows);
+        transactionsMainCardsCarouselContainer.innerHTML = '<p style="height: 150px; width: 100%; text-align: center;">No cards available</p>';
     }
 
     createAddCardButton();
@@ -565,22 +569,8 @@ const updateUICards = () => {
 
 let currentSlideIndex = 0;
 
-function moveSlide(direction) {
-    const totalSlides = document.querySelectorAll('.card-element').length;
 
-    currentSlideIndex += direction;
-
-    if (currentSlideIndex < 0) {
-        currentSlideIndex = totalSlides - 1; // Перемещаемся к последнему слайду, если достигнут первый
-    } else if (currentSlideIndex >= totalSlides) {
-        currentSlideIndex = 0; // Перемещаемся к первому слайду, если достигнут последний
-    }
-
-    transactionsSectionCardsCarouselWrapper.style.transform = `translateX(-${currentSlideIndex * 128}%)`;
-    displayMovements(currentAccount);
-}
-
-addCardFormCardNumber.addEventListener('input', (event) => {
+transactionsMainAddCardFormInputCardNumber.addEventListener('input', (event) => {
     let input = event.target.value.replace(/\s+/g, '');
     if (isNaN(input)) {
         input = input.slice(0, -1);
@@ -591,16 +581,18 @@ addCardFormCardNumber.addEventListener('input', (event) => {
 
 
 const handleAddCardFormSubmit = () => {
-    if (validateNotEmpty(addCardFormCardHolder) && validateFullname(addCardFormCardHolder)) {
-        if (validateNotEmpty(addCardFormCardNumber) && validateCardNumber(addCardFormCardNumber)) {
-            if (validateNotEmpty(addCardFormCVV) && validateCVV(addCardFormCVV)) {
-                if (validateNotEmpty(addCardFormExpDate) && validateExpiryDate(addCardFormExpDate)) {
-                    addCardToCurrentAccount(addCardFormCardNumber.value, addCardFormExpDate.value, addCardFormCVV.value, addCardFormCardHolder.value, 200);
-                    hideElement(transactionsSectionCardsOverlay);
-                    clearInput(addCardFormExpDate);
-                    clearInput(addCardFormCardNumber);
-                    clearInput(addCardFormCVV);
-                    clearInput(addCardFormCardHolder);
+    if (validateNotEmpty(transactionsMainAddCardFormInputCardHolder) && validateFullname(transactionsMainAddCardFormInputCardHolder)) {
+        if (validateNotEmpty(transactionsMainAddCardFormInputCardNumber) && validateCardNumber(transactionsMainAddCardFormInputCardNumber)) {
+            if (validateNotEmpty(transactionsMainAddCardFormInputCVV) && validateCVV(transactionsMainAddCardFormInputCVV)) {
+                if (validateNotEmpty(transactionsMainAddCardFormInputExpiryDate) && validateExpiryDate(transactionsMainAddCardFormInputExpiryDate)) {
+                    addCardToCurrentAccount(transactionsMainAddCardFormInputCardNumber.value, transactionsMainAddCardFormInputExpiryDate.value, transactionsMainAddCardFormInputCVV.value, transactionsMainAddCardFormInputCardHolder.value, 200);
+                    hideElement(transactionsMainAddCardModalOverlay);
+                    clearInputs(
+                        transactionsMainAddCardFormInputExpiryDate,
+                        transactionsMainAddCardFormInputCardNumber,
+                        transactionsMainAddCardFormInputCVV,
+                        transactionsMainAddCardFormInputCardHolder
+                    )
                 }
             }
         }
@@ -608,7 +600,7 @@ const handleAddCardFormSubmit = () => {
 };
 
 
-transactionsSectionCardsAddBtn.addEventListener('click', (e) => {
+transactionsMainAddCardFormAddCardButton.addEventListener('click', (e) => {
     e.preventDefault();
     handleAddCardFormSubmit();
 
@@ -617,26 +609,20 @@ transactionsSectionCardsAddBtn.addEventListener('click', (e) => {
 });
 
 const createAddCardButton = () => {
-    // Удаляем уже существующую кнопку, если она есть
-    const existingButton = transactionsSectionCards.querySelector(".button");
+    const existingButton = transactionsMainCards.querySelector(".transactions-main__cards-button");
     if (existingButton) {
-        transactionsSectionCards.removeChild(existingButton);
+        transactionsMainCards.removeChild(existingButton);
     }
 
-    // Создаем новую кнопку для добавления карты
-    const buttonDiv = document.createElement('div');
-    buttonDiv.classList.add("button");
 
     const button = document.createElement('button');
-    button.textContent = 'Add card';
-
+    button.classList.add("transactions-main__cards-button");
     button.addEventListener('click', () => {
-        console.log('Кнопка добавления карты нажата');
-        showElement(transactionsSectionCardsOverlay);
+        showElement(transactionsMainAddCardModalOverlay);
     });
 
-    buttonDiv.appendChild(button);
-    transactionsSectionCards.appendChild(buttonDiv);
+    button.textContent = 'Add card';
+    transactionsMainCards.appendChild(button);
 };
 
 const formatMovementDate = (date, locale) => {
@@ -644,7 +630,6 @@ const formatMovementDate = (date, locale) => {
         Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
 
     const daysPassed = calcDaysPassed(new Date(), date);
-    console.log(daysPassed);
 
     if (daysPassed === 0) return 'Today';
     if (daysPassed === 1) return 'Yesterday';
@@ -659,9 +644,8 @@ const formatCur = (value, locale, curr) => {
     }).format(value);
 };
 
-
 const displayMovements = (account) => {
-    transactionsMovements.innerHTML = ''; // Очищаем существующие транзакции
+    transactionsMainMovements.innerHTML = '';
 
     if (account?.cards.length === 0) {
         const emptyMessage = `
@@ -669,28 +653,26 @@ const displayMovements = (account) => {
                     <p>No movements available</p>
                 </div>
             `;
-        transactionsMovements.insertAdjacentHTML('beforeend', emptyMessage);
+        transactionsMainMovements.insertAdjacentHTML('beforeend', emptyMessage);
     }
 
 
     account?.cards.forEach((card, index) => {
         if (index === currentSlideIndex) {
             const {movements, movementsDates} = card;
-            console.log(card)
 
             if (movements?.length === 0) {
                 const emptyMessage = `
-                <div class="movement__row-nomov">
+                <div class="transactions-main__movements-row--no-movements">
                     <p>No movements available</p>
                 </div>
             `;
-                transactionsMovements.insertAdjacentHTML('beforeend', emptyMessage);
+                transactionsMainMovements.insertAdjacentHTML('beforeend', emptyMessage);
                 return;
             }
 
-            // Перебираем все движения для карты
             movements
-                ?.slice() // Создаем копию массива, чтобы не изменить оригинальный
+                ?.slice()
                 .reverse()
                 .forEach((movement, i) => {
                 const movementDate = new Date(movementsDates[movements.length - 1 - i]);
@@ -699,48 +681,60 @@ const displayMovements = (account) => {
                 const movementType = movement > 0 ? 'deposit' : 'withdrawal';
 
                 const movementRow = `
-                    <div class="movements__row">
-                        <div class="movements__type movements__type--${movementType}">
+                    <div class="transactions-main__movements-row">
+                        <div class="transactions-main__movements-row-type transactions-main__movements-row-type--${movementType}">
                             ${movementType.toUpperCase()} 
                         </div>
-                        <div class="movements__date">${formattedDate}</div>
-                        <div class="movements__amount">${formattedMov}</div>
+                        <div class="transactions-main__movements-row-date">${formattedDate}</div>
+                        <div class="transactions-main__movements-row-value">${formattedMov}</div>
                     </div>
             `;
-                transactionsMovements.insertAdjacentHTML('beforeend', movementRow);
+                transactionsMainMovements.insertAdjacentHTML('beforeend', movementRow);
             });
         }
 
     });
 };
 
+function moveSlide(direction) {
+    const totalSlides = document.querySelectorAll('.transactions-main__cards-carousel-card-element').length;
 
-btnOpTransfer.addEventListener('click', function (e) {
+    currentSlideIndex += direction;
+
+    if (currentSlideIndex < 0) {
+        currentSlideIndex = totalSlides - 1;
+    } else if (currentSlideIndex >= totalSlides) {
+        currentSlideIndex = 0;
+    }
+
+    transactionsMainCardsCarouselContainer.style.transform = `translateX(-${currentSlideIndex * 128}%)`;
+    displayMovements(currentAccount);
+}
+
+
+transactionsMainOperationFormButtonTransfer.addEventListener('click', function (e) {
     e.preventDefault();
 
-    removeErValText(inputTransferAmount);
-    removeErValText(inputTransferTo);
-    const amount = Number(inputTransferAmount.value);
-    const receiverUser = findUserByCardNumber(inputTransferTo.value)
-    const receiverCard = findCardByUserAndNumber(receiverUser.fullname, inputTransferTo.value)
+    removeErValText(transactionsMainOperationFormInputAmount);
+    removeErValText(transactionsMainOperationFormInputTo);
+    const amount = Number(transactionsMainOperationFormInputAmount.value);
+    const receiverUser = findUserByCardNumber(transactionsMainOperationFormInputTo.value)
+    const receiverCard = findCardByUserAndNumber(receiverUser.fullname, transactionsMainOperationFormInputTo.value)
 
-    console.log(receiverUser)
-    console.log(receiverCard)
-
-    if (validateNotEmpty(inputTransferTo)) {
-        if (validateNotEmpty(inputTransferAmount)) {
+    if (validateNotEmpty(transactionsMainOperationFormInputTo)) {
+        if (validateNotEmpty(transactionsMainOperationFormInputAmount)) {
             if (receiverUser) {
-                if (validateCardNumber(inputTransferTo)) {
+                if (validateCardNumber(transactionsMainOperationFormInputTo)) {
                     if (amount > 0) {
                         if (currentAccount.cards[currentSlideIndex].balance >= amount) {
-                            if (currentAccount.cards[currentSlideIndex].cardNumber !== inputTransferTo.value) {
+                            if (currentAccount.cards[currentSlideIndex].cardNumber !== transactionsMainOperationFormInputTo.value) {
                                 currentAccount.cards[currentSlideIndex].movements.push(-amount);
                                 currentAccount.cards[currentSlideIndex].movementsDates.push(new Date().toISOString());
                                 currentAccount.cards[currentSlideIndex].balance -= amount;
                                 receiverCard.movements.push(amount);
                                 receiverCard.movementsDates.push(new Date().toISOString());
                                 receiverCard.balance += amount;
-                                inputTransferAmount.value = inputTransferTo.value = '';
+                                transactionsMainOperationFormInputAmount.value = transactionsMainOperationFormInputTo.value = '';
 
                                 updateUICards()
                                 updateUI(currentAccount);
@@ -748,64 +742,59 @@ btnOpTransfer.addEventListener('click', function (e) {
                                 if (timer) clearInterval(timer);
                                 timer = startLogOutTimer();
                             } else {
-                                showError(inputTransferAmount, 'You can not trasfer to trasfering card.');
+                                showError(transactionsMainOperationFormInputAmount, 'You can not trasfer to trasfering card.');
                             }
                         } else {
-                            showError(inputTransferAmount, 'No enough money.');
+                            showError(transactionsMainOperationFormInputAmount, 'No enough money.');
                         }
                     } else {
-                        showError(inputTransferAmount, 'Wrong amount.');
+                        showError(transactionsMainOperationFormInputAmount, 'Wrong amount.');
                     }
                 }
             } else {
-                showError(inputTransferAmount, 'This card does not exist.');
+                showError(transactionsMainOperationFormInputAmount, 'This card does not exist.');
             }
         }
     }
 });
 
 const findCardByUserAndNumber = (username, cardNumber) => {
-    // Ищем данные пользователя в Map
     const user = Users.get(username);
 
     if (!user) {
-        console.error('User not found.');
-        return null; // Пользователь не найден
+        return null;
     }
 
-    // Ищем карту в массиве cards
     const card = user.cards.find(card => card.cardNumber === cardNumber);
 
     if (!card) {
-        console.error('Card not found for this user.');
-        return null; // Карта не найдена
+        return null;
     }
 
-    return card; // Возвращаем найденную карту
+    return card;
 };
 
 
-btnOpClose.addEventListener('click', function (e) {
+transactionsMainOperationFormButtonClose.addEventListener('click', function (e) {
     e.preventDefault();
 
     if (
-        inputCloseUsername.value === currentAccount.username &&
-        Number(inputClosePin.value) === currentAccount.pin
+        transactionsMainOperationFormInputUser.value === currentAccount.username &&
+        Number(transactionsMainOperationFormInputPin.value) === currentAccount.pin
     ) {
         Users.delete(currentAccount.fullname);
         currentAccount = undefined;
         toggleHeader();
-        showElement(loginForm);
-        hideElement(transactionsSection)
+        showElement(authorizationFormLogin);
+        hideElement(transactions)
 
-        console.log('deleted')
         if (timer) clearInterval(timer);
-        inputCloseUsername.value = inputClosePin.value = '';
+        transactionsMainOperationFormInputUser.value = transactionsMainOperationFormInputPin.value = '';
 
     }
 });
 
-inputTransferTo.addEventListener('input', (event) => {
+transactionsMainOperationFormInputTo.addEventListener('input', (event) => {
     let input = event.target.value.replace(/\s+/g, '');
     if (isNaN(input)) {
         input = input.slice(0, -1);
@@ -826,20 +815,21 @@ const startLogOutTimer = () => {
 
             currentAccount = undefined;
             toggleHeader();
-            showElement(loginForm);
-            hideElement(transactionsSection)
+            showElement(authorizationFormLogin);
+            hideElement(transactions)
         }
-
-        console.log(time)
 
         time--;
     };
 
-    let time = 300;
+    let time = 600;
 
     tick();
     const timer = setInterval(tick, 1000);
 
     return timer;
 };
+
+transactionsMainCardsCarouselArrowLeft.addEventListener ('click', () => moveSlide(-1));
+transactionsMainCardsCarouselArrowRight.addEventListener ('click', () => moveSlide(1));
 

@@ -1,0 +1,11 @@
+.transactions-main {
+    display: flex;
+    gap: 40px;
+}
+
+@media (max-width: 1090px) {
+    .transactions-main {
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+}

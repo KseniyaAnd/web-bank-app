@@ -1,0 +1,7 @@
+.transactions-header {
+    width: 100%;
+}
+
+.transactions-header__welcome-timer {
+    display: flex;
+}
