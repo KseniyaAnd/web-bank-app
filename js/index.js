@@ -209,7 +209,7 @@ const validatePin = (inputElement) => {
     if (pin.length >= 4 && /^\d+$/.test(pin)) {
         return true;
     } else {
-        showError(inputElement, 'PIN должен состоять минимум из четырех цифр и только из цифр.');
+        showError(inputElement, 'The PIN must be a minimum of four digits and numbers only.');
         return false;
     }
 };
@@ -219,12 +219,12 @@ const validateFullname = (inputElement) => {
     const fullname = inputElement.value;
     const words = fullname.trim().split(/\s+/);
     if (words.length < 2) {
-        showError(inputElement, 'Полное имя должно содержать больше двух слов.');
+        showError(inputElement, 'The full name must contain more than two words.');
         return false;
     }
     for (const word of words) {
         if (!/^[A-ZА-Я][a-zа-я]*$/.test(word)) {
-            showError(inputElement, 'Полное имя должно состоять из букв, и каждое слово должно начинаться с заглавной буквы.');
+            showError(inputElement, 'The full name must consist of letters, and each word must begin with a capital letter.');
             return false;
         }
     }
@@ -236,7 +236,7 @@ const validateUsername = (inputElement) => {
     const username = inputElement.value;
     const usernameRegex = /^[A-Za-zА-Яа-яЁё]+$/;
     if (!usernameRegex.test(username)) {
-        showError(inputElement, 'Имя пользователя должно состоять из первых букв полного имени.');
+        showError(inputElement, 'The username must consist of the first letters of the full name.');
         return false;
     }
     return true;
@@ -245,7 +245,7 @@ const validateUsername = (inputElement) => {
 const validateNotEmpty = (inputElement) => {
     removeErValText(inputElement);
     if (inputElement.value.trim() === '') {
-        showError(inputElement, 'Поле не может быть пустым.');
+        showError(inputElement, 'The field cannot be empty.');
         return false;
     } else {
         return true;
@@ -257,7 +257,7 @@ const validateCardNumber = (inputElement) => {
     const cardNumber = inputElement.value.replace(/\s/g, '');
     const regex = /^\d{16}$/;
     if (!regex.test(cardNumber)) {
-        showError(inputElement, 'Номер карты должен состоять из 16 цифр.');
+        showError(inputElement, 'The card number must consist of 16 digits.');
         return false;
     }
     return true;
@@ -268,7 +268,7 @@ const validateExpiryDate = (inputElement) => {
     const expiryDate = inputElement.value;
     const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
     if (!regex.test(expiryDate)) {
-        showError(inputElement, 'Срок действия карты должен быть в формате MM/YY.');
+        showError(inputElement, 'The card expiration date must be in MM/YY format.');
         return false;
     }
 
@@ -278,7 +278,7 @@ const validateExpiryDate = (inputElement) => {
     const currentMonth = currentDate.getMonth() + 1;
 
     if (parseInt(year) < currentYear || (parseInt(year) === currentYear && parseInt(month) < currentMonth)) {
-        showError(inputElement, 'Срок действия карты уже истек.');
+        showError(inputElement, 'The card has already expired.');
         return false;
     }
     return true;
@@ -289,7 +289,7 @@ const validateCVV = (inputElement) => {
     const cvv = inputElement.value;
     const regex = /^\d{3}$/;
     if (!regex.test(cvv)) {
-        showError(inputElement, 'CVV должен состоять из 3 цифр.');
+        showError(inputElement, 'CVV must consist of 3 digits.');
         return false;
     }
     return true;
@@ -599,6 +599,17 @@ const handleAddCardFormSubmit = () => {
     }
 };
 
+function formatExpDate(input) {
+    let value = input.value.replace(/\D/g, ''); // Убираем все нецифровые символы
+    if (value.length >= 2) {
+        value = value.slice(0, 2) + '/' + value.slice(2, 4); // Добавляем слэш после первых двух цифр
+    }
+    input.value = value; // Обновляем значение в поле ввода
+}
+
+transactionsMainAddCardFormInputExpiryDate.addEventListener('input', () => {
+    formatExpDate(transactionsMainAddCardFormInputExpiryDate);
+});
 
 transactionsMainAddCardFormAddCardButton.addEventListener('click', (e) => {
     e.preventDefault();
