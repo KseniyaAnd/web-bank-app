@@ -18,9 +18,9 @@ let Users = new Map([
                     '2020-01-28T09:15:04.904Z',
                     '2020-04-01T10:17:24.185Z',
                     '2020-05-08T14:11:59.604Z',
-                    '2024-07-26T17:01:17.194Z',
-                    '2024-08-22T18:49:59.371Z',
-                    '2024-11-19T12:01:20.894Z',
+                    '2024-11-20T17:01:17.194Z',
+                    '2024-11-23T18:49:59.371Z',
+                    '2024-11-24T12:01:20.894Z',
                 ]
             },
             {
@@ -730,7 +730,7 @@ transactionsMainOperationFormButtonTransfer.addEventListener('click', function (
     removeErValText(transactionsMainOperationFormInputTo);
     const amount = Number(transactionsMainOperationFormInputAmount.value);
     const receiverUser = findUserByCardNumber(transactionsMainOperationFormInputTo.value)
-    const receiverCard = findCardByUserAndNumber(receiverUser.fullname, transactionsMainOperationFormInputTo.value)
+    const receiverCard = findCardByUserAndNumber(receiverUser?.fullname, transactionsMainOperationFormInputTo.value)
 
     if (validateNotEmpty(transactionsMainOperationFormInputTo)) {
         if (validateNotEmpty(transactionsMainOperationFormInputAmount)) {

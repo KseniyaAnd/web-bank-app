@@ -23,7 +23,7 @@
 
     <button class="header__logout-button">
         <p class="header__logout-button-label">Log Out</p>
-        <img class="header__logout-button-img" src="assets/img/log-out-arrow.png" >
+        <img class="header__logout-button-img" src="assets/img/log-out-arrow.png">
     </button>
 </header>
 
@@ -115,7 +115,8 @@
 
                                 <div class="transactions-add-card-form__inputs-container">
                                     <div>
-                                        <label for="cvv" class="transactions-main__add-card-form-input-label">CVV</label>
+                                        <label for="cvv"
+                                               class="transactions-main__add-card-form-input-label">CVV</label>
                                         <input type="text" id="cvv" class="transactions-main__add-card-form-input"
                                                maxlength="3" placeholder="CVV"
                                                required>
@@ -124,7 +125,8 @@
                                     <div>
                                         <label for="expiryDate" class="transactions-main__add-card-form-input-label">Exp
                                             Date</label>
-                                        <input type="text" id="expiryDate" class="transactions-main__add-card-form-input"
+                                        <input type="text" id="expiryDate"
+                                               class="transactions-main__add-card-form-input"
                                                maxlength="5"
                                                placeholder="MM/YY"
                                                required>
@@ -142,23 +144,41 @@
                 <div class="transactions-main__operation">
                     <p>Transfer money</p>
                     <form class="transactions-main__operation-form">
-                        <input type="text" class="transactions-main__operation-form-input transactions-main__operation-form-input--to" placeholder="Transfer to"/>
-                        <input type="number" class="transactions-main__operation-form-input transactions-main__operation-form-input--amount" placeholder="Amount"/>
-                        <button class="transactions-main__operation-form-button transactions-main__operation-form-button--transfer">&rarr;</button>
+                        <div class="transactions-main__operation-form-container">
+                            <input type="text"
+                                   class="transactions-main__operation-form-input transactions-main__operation-form-input--to"
+                                   placeholder="Transfer to"/>
+                        </div>
+                        <div class="transactions-main__operation-form-container">
+                            <input type="number"
+                                   class="transactions-main__operation-form-input transactions-main__operation-form-input--amount"
+                                   placeholder="Amount"/>
+                        </div>
+                        <button class="transactions-main__operation-form-button transactions-main__operation-form-button--transfer">
+                            &rarr;
+                        </button>
                     </form>
                 </div>
 
                 <div class="transactions-main__operation">
                     <p>Close account</p>
                     <form class="transactions-main__operation-form">
-                        <input type="text" class="transactions-main__operation-form-input transactions-main__operation-form-input--user" placeholder="Confirm user"/>
-                        <input
-                                type="password"
-                                maxlength="6"
-                                class="transactions-main__operation-form-input transactions-main__operation-form-input--pin"
-                                placeholder="Confirm PIN"
-                        />
-                        <button class="transactions-main__operation-form-button transactions-main__operation-form-button--close">&rarr;</button>
+                        <div class="transactions-main__operation-form-container">
+                            <input type="text"
+                                   class="transactions-main__operation-form-input transactions-main__operation-form-input--user"
+                                   placeholder="Confirm user"/>
+                        </div>
+                        <div class="transactions-main__operation-form-container">
+                            <input
+                                    type="password"
+                                    maxlength="6"
+                                    class="transactions-main__operation-form-input transactions-main__operation-form-input--pin"
+                                    placeholder="Confirm PIN"
+                            />
+                        </div>
+                        <button class="transactions-main__operation-form-button transactions-main__operation-form-button--close">
+                            &rarr;
+                        </button>
                     </form>
                 </div>
             </div>
