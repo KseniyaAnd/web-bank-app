@@ -560,7 +560,7 @@ const updateUICards = () => {
         });
     } else {
         hideElement(transactionsMainCardsCarouselArrows);
-        transactionsMainCardsCarouselContainer.innerHTML = '<p style="height: 150px; width: 100%; text-align: center;">No cards available</p>';
+        transactionsMainCardsCarouselContainer.innerHTML = '<p style="height: 150px; width: 100%; text-align: center; padding-top: 50px">No cards available</p>';
     }
 
     createAddCardButton();
