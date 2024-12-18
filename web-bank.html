@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BankWebApp | App</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/authorization.css">
+    <link rel="stylesheet" href="css/transactions-header.css">
+    <link rel="stylesheet" href="css/transactions-main-add-card.css">
+    <link rel="stylesheet" href="css/transactions-main.css">
+    <link rel="stylesheet" href="css/transactions-main-movements.css">
+    <link rel="stylesheet" href="css/transactions-main-cards.css">
+    <link rel="stylesheet" href="css/transactions-main-operation.css">
+</head>
+
+<body>
+<header class="header opacity-zero">
+    <div class="header__logo">
+        <img alt="header__bank-logo" src="assets/img/bank-logo.png"/>
+        <p>Web Bank</p>
+    </div>
+
+    <button class="header__logout-button">
+        <p class="header__logout-button-label">Log Out</p>
+        <img class="header__logout-button-img" src="assets/img/log-out-arrow.png">
+    </button>
+</header>
+
+<main class="main">
+    <div class="authorization">
+        <form class="authorization__form authorization__form-login opacity-zero">
+            <p>Log in</p>
+            <input
+                    type="text"
+                    placeholder="user"
+                    class="authorization__form-login-input--user"
+            />
+            <input
+                    type="password"
+                    placeholder="PIN"
+                    maxlength="4"
+                    class="authorization__form-login-input--pin"
+            />
+            <button class="authorization__form-button authorization__form-login-button">Continue</button>
+            <p class="authorization__form-toggle authorization__form-toggle-to-signup">Sign up.</p>
+        </form>
+
+        <form class="authorization__form authorization__form-signup opacity-zero">
+            <p>Sign up</p>
+            <input
+                    type="text"
+                    placeholder="Full Name"
+                    class="authorization__form-signup-input--fullname"
+            />
+            <input
+                    type="password"
+                    placeholder="PIN"
+                    maxlength="4"
+                    class="authorization__form-signup-input--pin"
+            />
+            <button class="authorization__form-button authorization__form-signup-button">Continue</button>
+            <p class="authorization__form-toggle authorization__form-toggle-to-login">Log in.</p>
+        </form>
+    </div>
+
+    <div class="transactions opacity-zero z-index-min">
+        <div class="transactions-header">
+            <div class="transactions-header__welcome-timer">
+            </div>
+            <div class="transactions-header__date">
+            </div>
+        </div>
+
+        <div class="transactions-main">
+            <div class="transactions-main__movements">
+            </div>
+
+            <div class="transactions-main__container">
+                <div class="transactions-main__cards">
+                    <div class="transactions-main__cards-carousel">
+                        <div class="transactions-main__cards-carousel-container">
+                        </div>
+                        <button class="transactions-main__cards-carousel-arrow
+                                       transactions-main__cards-carousel-arrow-left
+                                       opacity-zero
+                                       z-index-min">
+                            &#10094;
+                        </button>
+                        <button class="transactions-main__cards-carousel-arrow
+                                       transactions-main__cards-carousel-arrow-right
+                                       opacity-zero
+                                       z-index-min">
+                            &#10095;
+                        </button>
+                    </div>
+                </div>
+
+                <div class="transactions-main__add-card transactions_main__add-card-modal-overlay opacity-zero z-index-min">
+                    <div class="transactions-main__add-card-container">
+                        <img class="transactions-main__add-card-img" src="assets/img/card-template.png">
+                        <div>
+                            <form class="transactions-main__add-card-form-container">
+                                <label for="cardHolder"
+                                       class="transactions-main__add-card-form-input-label">Cardholder</label>
+                                <input type="text" id="cardHolder" class="transactions-main__add-card-form-input "
+                                       placeholder="Cardholder"
+                                       required>
+
+                                <label for="cardNumber" class="transactions-main__add-card-form-input-label">Card
+                                    Number</label>
+                                <input type="text" id="cardNumber" class="transactions-main__add-card-form-input"
+                                       maxlength="19"
+                                       placeholder="Card Number" required>
+
+                                <div class="transactions-add-card-form__inputs-container">
+                                    <div>
+                                        <label for="cvv"
+                                               class="transactions-main__add-card-form-input-label">CVV</label>
+                                        <input type="text" id="cvv" class="transactions-main__add-card-form-input"
+                                               maxlength="3" placeholder="CVV"
+                                               required>
+                                    </div>
+
+                                    <div>
+                                        <label for="expiryDate" class="transactions-main__add-card-form-input-label">Exp
+                                            Date</label>
+                                        <input type="text" id="expiryDate"
+                                               class="transactions-main__add-card-form-input"
+                                               maxlength="5"
+                                               placeholder="MM/YY"
+                                               required>
+                                    </div>
+
+                                </div>
+
+                                <button class="transactions-main__add-card-form-add-card-button">Add card</button>
+                            </form>
+                        </div>
+                        <button class="transactions-main__add-card-form-close-button">✖</button>
+                    </div>
+                </div>
+
+                <div class="transactions-main__operation">
+                    <p>Transfer money</p>
+                    <form class="transactions-main__operation-form">
+                        <div class="transactions-main__operation-form-container">
+                            <input type="text"
+                                   class="transactions-main__operation-form-input transactions-main__operation-form-input--to"
+                                   placeholder="Transfer to"/>
+                        </div>
+                        <div class="transactions-main__operation-form-container">
+                            <input type="number"
+                                   class="transactions-main__operation-form-input transactions-main__operation-form-input--amount"
+                                   placeholder="Amount"/>
+                        </div>
+                        <button class="transactions-main__operation-form-button transactions-main__operation-form-button--transfer">
+                            &rarr;
+                        </button>
+                    </form>
+                </div>
+
+                <div class="transactions-main__operation">
+                    <p>Close account</p>
+                    <form class="transactions-main__operation-form">
+                        <div class="transactions-main__operation-form-container">
+                            <input type="text"
+                                   class="transactions-main__operation-form-input transactions-main__operation-form-input--user"
+                                   placeholder="Confirm user"/>
+                        </div>
+                        <div class="transactions-main__operation-form-container">
+                            <input
+                                    type="password"
+                                    maxlength="6"
+                                    class="transactions-main__operation-form-input transactions-main__operation-form-input--pin"
+                                    placeholder="Confirm PIN"
+                            />
+                        </div>
+                        <button class="transactions-main__operation-form-button transactions-main__operation-form-button--close">
+                            &rarr;
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="js/index.js"></script>
+</body>
+</html>

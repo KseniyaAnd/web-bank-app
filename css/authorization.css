@@ -1,0 +1,40 @@
+.authorization__form {
+    color: #ffffff;
+
+    width: 400px;
+    border-radius: 30px;
+    margin: 20px 50px;
+    padding: 50px 40px;
+    font-size: 20px;
+
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+    top: 25%;
+
+    gap: 15px;
+    flex-direction: column;
+}
+
+.authorization__form-button {
+    margin-top: 20px;
+}
+
+.authorization__form-toggle {
+    cursor: pointer;
+    font-size: 16px;
+}
+
+@media (max-width: 450px) {
+    .authorization__form {
+        width: 300px;
+    }
+}
+

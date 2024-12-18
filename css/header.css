@@ -1,0 +1,73 @@
+/* ============================== */
+/* Header */
+/* ============================== */
+
+.header {
+    display: flex;
+}
+
+/* ============================== */
+/* Logo header */
+/* ============================== */
+
+.header__logo {
+    flex: 1;
+    display: flex;
+    gap: 5px;
+}
+
+.header__logo img {
+    width: 42px;
+}
+
+.header__logo p {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+}
+
+.header__logo:hover > img,
+.header__logo:hover > p {
+    transform: scale(1.04);
+}
+
+.header__logout-button-img  {
+    width: 42px;
+    display: none;
+}
+
+/* ============================== */
+/* Media requests */
+/* ============================== */
+
+
+@media (max-width: 1000px) {
+    .header__logo p {
+        display: none;
+    }
+
+    .header__logout-button {
+        padding: 0;
+        background-color: rgba(255, 255, 255, 0);
+    }
+
+    .header__logout-button-label {
+        display: none;
+    }
+
+    .header__logout-button-img {
+        display: block;
+    }
+}
+
+@media (max-width: 900px) {
+    .header__logo p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 500px) {
+    .header {
+        margin: 10px;
+    }
+}

@@ -1,0 +1,46 @@
+.transactions-main__movements {
+    flex: 1;
+    overflow: hidden;
+    width: 500px;
+    height: 435px;
+}
+
+.transactions-main__movements-row {
+    font-size: 18px;
+    padding: 25px 0px;
+    display: flex;
+    align-items: center;
+    }
+
+.transactions-main__movements-row--no-movements {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.transactions-main__movements-row-type {
+    text-transform: uppercase;
+    font-weight: 500;
+    color: #fff;
+    padding: 0.1rem 1rem;
+    border-radius: 10rem;
+    margin-right: 1rem;
+}
+
+.transactions-main__movements-row-type--deposit {
+    background-color: #7bb456;
+}
+
+.transactions-main__movements-row-type--withdrawal {
+    background-color: #f83d3d;
+}
+
+.transactions-main__movements-row-date {
+    flex: 1;
+    text-transform: uppercase;
+}
+
+.transactions-main__movements-row-value {
+    margin-left: auto;
+}
